@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('seller-register') }}">
         @csrf
 
         <!-- Name -->
@@ -8,6 +8,14 @@
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
                 autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+
+        <!-- Shop Name -->
+        <div class="mt-4">
+            <x-input-label for="shop_name" :value="__('Shop Name')" />
+            <x-text-input id="shop_name" class="block mt-1 w-full" type="text" name="shop_name" :value="old('shop_name')" required
+                autofocus autocomplete="shop_name" />
+            <x-input-error :messages="$errors->get('shop_name')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
@@ -38,15 +46,14 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <!-- Phone Number -->
-        <div class="mt-4">
-            <x-input-label for="phone" :value="__('Phone')" />
-            <div class="flex flex-start">
-                <div class="bg-slate-400 mt-1 rounded-s-md flex items-center px-2">+977</div>
-                <x-text-input id="phone" class="block mt-1 w-full rounded-s-none" type="email" name="email" :value="old('email')"
-                required autocomplete="username" placeholder="9812345678" />
-            </div>
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+         <!-- Address -->
+         <div class="mt-4">
+            <x-input-label for="shop_address" :value="__('Address')" />
+
+            <x-text-input id="shop_address" class="block mt-1 w-full" type="text"
+                name="shop_address" required autocomplete="shop_address" />
+
+            <x-input-error :messages="$errors->get('shop_address')" class="mt-2" />
         </div>
 
         <div class="flex items-center justify-end mt-4">
