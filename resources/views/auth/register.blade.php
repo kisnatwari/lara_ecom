@@ -43,10 +43,10 @@
             <x-input-label for="phone" :value="__('Phone')" />
             <div class="flex flex-start">
                 <div class="bg-slate-400 mt-1 rounded-s-md flex items-center px-2">+977</div>
-                <x-text-input id="phone" class="block mt-1 w-full rounded-s-none" type="email" name="email" :value="old('email')"
+                <x-text-input id="phone" class="block mt-1 w-full rounded-s-none" type="text" name="phone" :value="old('phone')"
                 required autocomplete="username" placeholder="9812345678" />
             </div>
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
 
         <div class="flex items-center justify-end mt-4">

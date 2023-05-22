@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/seller', 'seller.layouts')->name('seller-layouts');
     Route::view('/seller/dashboard', 'seller.dashboard')->name('seller-dashboard');
     Route::view('/seller/products', 'seller.products.index')->name('seller-products');
+    Route::view('/seller/products/create', 'seller.products.create')->name('seller-products');
 });
 
 Route::middleware('auth')->group(function () {

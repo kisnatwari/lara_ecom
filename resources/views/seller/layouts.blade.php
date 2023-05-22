@@ -21,24 +21,25 @@
                 <ul class="text-white">
                     <li class="mb-2">
                         <a href="/seller/dashboard" class="flex items-center gap-2 py-2 px-4 rounded-md hover:bg-slate-700 {{activeClass('seller/dashboard')}}">
+                            <i class="fas fa-tachometer-alt"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
                     <li class="mb-2">
                         <a href="/seller/products" class="flex items-center gap-2 py-2 px-4 rounded-md hover:bg-slate-700  {{activeClass('seller/products')}}">
-
+                            <i class="fas fa-box-open"></i> 
                             <span>Products</span>
                         </a>
                     </li>
                     <li class="mb-2">
                         <a href="/seller/orders" class="flex items-center gap-2 py-2 px-4 rounded-md hover:bg-slate-700  {{activeClass('seller/orders')}}">
-
+                            <i class="fas fa-clipboard-list"></i> 
                             <span>Orders</span>
                         </a>
                     </li>
                     <li>
                         <a href="/seller/profile" class="flex items-center gap-2 py-2 px-4 rounded-md hover:bg-slate-700  {{activeClass('seller/profile')}}">
-
+                            <i class="fas fa-user"></i> 
                             <span>Profile</span>
                         </a>
                     </li>
