@@ -1,3 +1,6 @@
+@php
+    use App\Models\Seller;
+@endphp
 @extends('layouts.seller-app')
 
 @section('seller-layout')
@@ -13,7 +16,7 @@
             <!-- User profile -->
             <div class="mb-14">
                 <div class="w-20 h-20 mx-auto bg-slate-500 rounded-full"></div>
-                <h1 class="text-center mt-2 text-white font-bold text-xl">Brand Name</h1>
+                <h1 class="text-center mt-2 text-white font-bold text-xl">{{Seller::find(Auth::user()->id)->shop_name}}</h1>
             </div>
 
             <!-- Navigation -->

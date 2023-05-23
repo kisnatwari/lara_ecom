@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\District;
+use App\Models\Municipality;
 use App\Models\Seller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -26,7 +28,9 @@ class RegisteredUserController extends Controller
 
     public function createSeller(): View
     {
-        return view('auth.seller-register');
+        $districts = District::select(['id', 'district_name'])->get();
+        $municipalities = Municipality::where('district_id', $districts[0]['id'])->select(['id', 'municipality_name'])->get();
+        return view('auth.seller-register', compact('districts', 'municipalities'));
     }
 
     /**
@@ -37,17 +41,17 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'regex:/^(?![0-9])[A-Za-z\s]+$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'phone' => ['required', 'string']
+            'phone' => ['required', 'string', 'regex:/^(98|97)[0-9]{8}$/'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'phone' => $request->phone
+            'phone' => $request->phone,
         ]);
 
         event(new Registered($user));
@@ -60,18 +64,21 @@ class RegisteredUserController extends Controller
     public function storeSeller(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'shop_name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'regex:/^(?![0-9])[A-Za-z\s]+$/'],
+            'shop_name' => ['required', 'string', 'max:255', 'regex:/^(?![0-9])[A-Za-z0-9\s]+$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'address' => ['required', 'string'],
+            'municipality_id' => ['required', 'exists:municipalities,id'],
+            'ward' => ['required', 'string', 'regex:/^(?![0-9])[A-Za-z\s0-9]+$/'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'address' => $request->address,
+            'phone' => $request->phone,
+            'municipality_id' => $request->municipality_id,
+            'ward' => $request->ward,
         ]);
 
         $seller = Seller::create([

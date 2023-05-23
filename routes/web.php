@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Municipality;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,8 +37,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/category/search/{query}', [CategoryController::class,'searchCategory']);
+Route::get('/category/search/{query}', [CategoryController::class, 'searchCategory']);
+Route::get('/get-municipalities/{district_id}', function (int $district_id) {
+    $munitipalities = Municipality::where('district_id', $district_id)->select(['id', 'municipality_name'])->get();
+    return response()->json($munitipalities);
+});
 
 //Route::view('/seller', 'seller.layouts');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
