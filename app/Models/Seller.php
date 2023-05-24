@@ -12,6 +12,9 @@ class Seller extends Model
     protected $fillable = [
         'user_id',
         'shop_name',
-        'shop_address'
     ];
+
+    public function user(){
+        return $this -> belongsTo("user");
+    }
 }

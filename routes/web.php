@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Municipality;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/seller/dashboard', 'seller.dashboard')->name('seller-dashboard');
     Route::view('/seller/products', 'seller.products.index')->name('seller-products');
     Route::view('/seller/products/create', 'seller.products.create')->name('seller-products');
+    Route::resource('/products', ProductController::class);
 });
 
 Route::middleware('auth')->group(function () {
