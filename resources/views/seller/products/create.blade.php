@@ -1,6 +1,7 @@
 @extends('seller.layouts')
 
 @section('content')
+
     <div class="h-full p-2">
         <div class="h-full overflow-auto flex flex-col justify-center items-center bg-white/5 p-2">
             <form class="min-w-[300px] relative" action="/products" method="POST" enctype="multipart/form-data">

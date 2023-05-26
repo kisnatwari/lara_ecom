@@ -24,7 +24,7 @@
             @include('layouts.navigation')
 
             <!-- Page Content -->
-            <main class="flex-grow">
+            <main class="flex-grow overflow-auto">
                 @yield('seller-layout')
             </main>
         </div>

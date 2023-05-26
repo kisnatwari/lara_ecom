@@ -28,7 +28,7 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/seller', 'seller.layouts')->name('seller-layouts');
     Route::view('/seller/dashboard', 'seller.dashboard')->name('seller-dashboard');
-    Route::view('/seller/products', 'seller.products.index')->name('seller-products');
+    Route::get('/seller/products', [ProductController::class, 'index'])->name('seller-products');
     Route::view('/seller/products/create', 'seller.products.create')->name('seller-products');
     Route::resource('/products', ProductController::class);
 });
