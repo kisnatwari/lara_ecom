@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\District;
 use App\Models\Municipality;
 use App\Models\Seller;
+use App\Models\ShopCategory;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -30,7 +31,8 @@ class RegisteredUserController extends Controller
     {
         $districts = District::select(['id', 'district_name'])->get();
         $municipalities = Municipality::where('district_id', $districts[0]['id'])->select(['id', 'municipality_name'])->get();
-        return view('auth.seller-register', compact('districts', 'municipalities'));
+        $shopCategories = ShopCategory::all();
+        return view('auth.seller-register', compact('districts', 'municipalities', 'shopCategories'));
     }
 
     /**
@@ -69,8 +71,10 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'municipality_id' => ['required', 'exists:municipalities,id'],
+            'shop_category' => ['required', 'exists:shop_categories,id'],
             'ward' => ['required', 'string', 'regex:/^(?![0-9])[A-Za-z\s0-9]+$/'],
         ]);
+
 
         $user = User::create([
             'name' => $request->name,
@@ -81,9 +85,10 @@ class RegisteredUserController extends Controller
             'ward' => $request->ward,
         ]);
 
-        $seller = Seller::create([
+        Seller::create([
             'user_id' => $user->id,
             'shop_name' => $request->shop_name,
+            'shop_category_id' => $request->shop_category,
         ]);
 
         event(new Registered($user));

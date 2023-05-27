@@ -43,4 +43,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function seller()
+    {
+        return $this->hasOne(Seller::class);
+    }
+
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class);
+    }
+
+    public function categories()
+    {
+        return $this->hasManyThrough(Category::class, Seller::class);
+    }
 }

@@ -29,8 +29,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/seller', 'seller.layouts')->name('seller-layouts');
     Route::view('/seller/dashboard', 'seller.dashboard')->name('seller-dashboard');
     Route::get('/seller/products', [ProductController::class, 'index'])->name('seller-products');
-    Route::view('/seller/products/create', 'seller.products.create')->name('seller-products');
-    Route::resource('/products', ProductController::class);
+    Route::get('/seller/products/create', [ProductController::class, 'create'])->name('products.create');
+    //Route::resource('/products', ProductController::class);
+
+    Route::get("/seller/categories", [CategoryController::class, 'index'])->name('categories.index');
+    Route::post("/category", [CategoryController::class, 'store'])->name('categories.store');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])
+    ->name('categories.destroy');
+    Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
 });
 
 Route::middleware('auth')->group(function () {
@@ -40,6 +46,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/category/search/{query}', [CategoryController::class, 'searchCategory']);
+
 Route::get('/get-municipalities/{district_id}', function (int $district_id) {
     $munitipalities = Municipality::where('district_id', $district_id)->select(['id', 'municipality_name'])->get();
     return response()->json($munitipalities);

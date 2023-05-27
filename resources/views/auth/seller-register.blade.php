@@ -13,7 +13,7 @@
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('Propriter Name')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
                 autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
@@ -69,6 +69,17 @@
                 @endforeach
             </select>
             <input type="hidden" name="ward" value="dummy ward">
+            
+        </div>
+
+        {{-- Shop Type --}}
+        <div class="mt-4">
+            <x-input-label :value="__('Type of your shop')" />
+            <select name="shop_category" id="shop_category" class="bg-gray-800 text-gray-200">
+                @foreach ($shopCategories as $shopCategory)
+                    <option value="{{ $shopCategory->id }}">{{ $shopCategory->name }}</option>
+                @endforeach
+            </select>
         </div>
 
 

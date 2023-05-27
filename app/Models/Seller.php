@@ -12,9 +12,21 @@ class Seller extends Model
     protected $fillable = [
         'user_id',
         'shop_name',
+        'shop_category_id'
     ];
 
-    public function user(){
-        return $this -> belongsTo("user");
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function shopCategory()
+    {
+        return $this->belongsTo(ShopCategory::class);
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
     }
 }
