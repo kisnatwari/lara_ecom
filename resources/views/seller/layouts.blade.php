@@ -16,13 +16,13 @@
     @endphp
     <div class="flex dark:text-white h-full">
         {{-- Sidebar content here --}}
-        <div class="flex flex-col gap-4 justify-around items-center h-full p-6 w-fit backdrop-blur-lg">
+        <div class="flex flex-col gap-4 justify-between items-center h-full p-6 w-fit backdrop-blur-lg">
             <!-- User profile -->
-            <div class="mb-14">
+            {{-- <div class="mb-14">
                 <div class="w-20 h-20 mx-auto bg-slate-500 rounded-full"></div>
                 <h1 class="text-center mt-2 text-white font-bold text-xl">{{ Seller::find(Auth::user()->id)->shop_name }}
                 </h1>
-            </div>
+            </div> --}}
             @php
                 $links = [['label' => 'Dashboard', 'href' => '/dashboard', 'icon' => 'fas fa-tachometer-alt'], ['label' => 'Categories', 'href' => '/categories', 'icon' => 'fas fa-list'], ['label' => 'Products', 'href' => '/products', 'icon' => 'fas fa-box-open'], ['label' => 'Orders', 'href' => '/orders', 'icon' => 'fas fa-clipboard-list'], ['label' => 'Profile', 'href' => '/profile', 'icon' => 'fas fa-user']];
             @endphp
@@ -42,7 +42,6 @@
                 </ul>
             </div>
             <div class="text-center">
-                <p>kisnatwari@gmail.com</p>
                 <small>
                     COPYRIGHT <br />
                     &copy; Krishna Tiwari

@@ -32,8 +32,7 @@
                         @foreach ($products as $product)
                             <a href="/seller/products/{{ $product->id }}"
                                 class="w-32 lg:36 mx-auto my-2 shadow-2xl bg-slate-800 text-gray-200 overflow-hidden rounded-md">
-                                <img src="{{ Storage::url(json_decode($product->images, true)[1]) }}" alt=""
-                                    class="h-32 lg:36 w-full object-cover rounded-b-xl">
+                                <img src="{{ Storage::url(json_decode($product->images, true)[1]) }}" alt="" class="h-32 lg:36 w-full object-contain rounded-b-xl">
                                 <div class="px-2 py-1">
                                     <h5 class="text-md truncate">{{ $product->product_name }}</h5>
                                     <p class="text-end"></p>

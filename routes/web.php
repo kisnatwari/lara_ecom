@@ -26,11 +26,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('/seller', 'seller.layouts')->name('seller-layouts');
+    Route::view('/seller', 'seller.layouts')->name('selsler-layouts');
     Route::view('/seller/dashboard', 'seller.dashboard')->name('seller-dashboard');
     Route::get('/seller/products', [ProductController::class, 'index'])->name('seller-products');
     Route::get('/seller/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::get("/seller/products/{product}", [ProductController::class, 'show'])->name('products.view');
+    Route::get("/seller/products/{product}/edit", [ProductController::class, 'edit'])->name('products.edit');
     Route::delete("/products/{product}", [ProductController::class, 'destroy'])->name('products.destroy');
     Route::resource('/products', ProductController::class);
 
