@@ -7,7 +7,11 @@
     @php
         function activeClass($path)
         {
-            return $path == request()->path() ? 'bg-gradient-to-tr from-indigo-800 to-purple-800' : '';
+            if (substr(request()->path(), 0, strlen($path)) === $path) {
+                return 'bg-gradient-to-tr from-indigo-800 to-purple-800';
+            } else {
+                return '';
+            }
         }
     @endphp
     <div class="flex dark:text-white h-full">
@@ -20,13 +24,7 @@
                 </h1>
             </div>
             @php
-                $links = [
-                    ['label' => 'Dashboard', 'href' => '/dashboard', 'icon' => 'fas fa-tachometer-alt'],
-                    ['label' => 'Categories', 'href' => '/categories', 'icon' => 'fas fa-list'],
-                    ['label' => 'Products', 'href' => '/products', 'icon' => 'fas fa-box-open'],
-                    ['label' => 'Orders', 'href' => '/orders', 'icon' => 'fas fa-clipboard-list'],
-                    ['label' => 'Profile', 'href' => '/profile', 'icon' => 'fas fa-user']
-                ];
+                $links = [['label' => 'Dashboard', 'href' => '/dashboard', 'icon' => 'fas fa-tachometer-alt'], ['label' => 'Categories', 'href' => '/categories', 'icon' => 'fas fa-list'], ['label' => 'Products', 'href' => '/products', 'icon' => 'fas fa-box-open'], ['label' => 'Orders', 'href' => '/orders', 'icon' => 'fas fa-clipboard-list'], ['label' => 'Profile', 'href' => '/profile', 'icon' => 'fas fa-user']];
             @endphp
 
             <!-- Navigation -->
@@ -35,7 +33,7 @@
                     @foreach ($links as $link)
                         <li class="mb-2">
                             <a href="/seller{{ $link['href'] }}"
-                                class="flex items-center gap-2 py-2 px-4 rounded-md hover:bg-slate-700 {{ activeClass('seller'.$link['href']) }}">
+                                class="flex items-center gap-2 py-2 px-4 rounded-md hover:bg-slate-700 {{ activeClass('seller' . $link['href']) }}">
                                 <i class="{{ $link['icon'] }}"></i>
                                 <span>{{ $link['label'] }}</span>
                             </a>
@@ -44,7 +42,7 @@
                 </ul>
             </div>
             <div class="text-center">
-                <p>SELLERSEEK</p>
+                <p>kisnatwari@gmail.com</p>
                 <small>
                     COPYRIGHT <br />
                     &copy; Krishna Tiwari

@@ -13,7 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::where("seller_id", auth() -> user() -> seller -> id)->get();
         return view("seller.categories.index", compact('categories'));
     }
 

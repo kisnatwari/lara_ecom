@@ -30,7 +30,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/seller/dashboard', 'seller.dashboard')->name('seller-dashboard');
     Route::get('/seller/products', [ProductController::class, 'index'])->name('seller-products');
     Route::get('/seller/products/create', [ProductController::class, 'create'])->name('products.create');
-    //Route::resource('/products', ProductController::class);
+    Route::get("/seller/products/{product}", [ProductController::class, 'show'])->name('products.view');
+    Route::delete("/products/{product}", [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::resource('/products', ProductController::class);
 
     Route::get("/seller/categories", [CategoryController::class, 'index'])->name('categories.index');
     Route::post("/category", [CategoryController::class, 'store'])->name('categories.store');
