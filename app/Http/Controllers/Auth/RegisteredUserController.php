@@ -29,8 +29,12 @@ class RegisteredUserController extends Controller
 
     public function createSeller(): View
     {
-        $districts = District::select(['id', 'district_name'])->get();
-        $municipalities = Municipality::where('district_id', $districts[0]['id'])->select(['id', 'municipality_name'])->get();
+        $districts = District::select(['id', 'district_name'])->orderBy("district_name")->get();
+
+        $municipalities = Municipality::where('district_id', $districts[0]['id'])
+        ->select(['id', 'municipality_name'])
+        ->orderBy("municipality_name") ->get();
+        
         $shopCategories = ShopCategory::all();
         return view('auth.seller-register', compact('districts', 'municipalities', 'shopCategories'));
     }
