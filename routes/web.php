@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Municipality;
@@ -17,16 +18,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomepageController::class, 'homepage']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('/seller', 'seller.layouts')->name('selsler-layouts');
+    Route::view('/seller', 'seller.layouts')->name('seller-layouts');
     Route::view('/seller/dashboard', 'seller.dashboard')->name('seller-dashboard');
     Route::get('/seller/products', [ProductController::class, 'index'])->name('seller-products');
     Route::get('/seller/products/create', [ProductController::class, 'create'])->name('products.create');

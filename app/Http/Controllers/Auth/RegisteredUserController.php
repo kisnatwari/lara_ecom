@@ -32,9 +32,9 @@ class RegisteredUserController extends Controller
         $districts = District::select(['id', 'district_name'])->orderBy("district_name")->get();
 
         $municipalities = Municipality::where('district_id', $districts[0]['id'])
-        ->select(['id', 'municipality_name'])
-        ->orderBy("municipality_name") ->get();
-        
+            ->select(['id', 'municipality_name'])
+            ->orderBy("municipality_name")->get();
+
         $shopCategories = ShopCategory::all();
         return view('auth.seller-register', compact('districts', 'municipalities', 'shopCategories'));
     }
@@ -50,21 +50,21 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255', 'regex:/^(?![0-9])[A-Za-z\s]+$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'phone' => ['required', 'string', 'regex:/^(98|97)[0-9]{8}$/'],
+            'phone' => ['string', 'regex:/^(98|97)[0-9]{8}$/'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
+            'password' => Hash::make($request->password)
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect('/');
+        //return redirect(RouteServiceProvider::HOME);
     }
 
     public function storeSeller(Request $request): RedirectResponse
@@ -99,6 +99,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        if (auth()->user()->seller)
+            return redirect('/seller/dashboard');
     }
 }
