@@ -1,11 +1,19 @@
 @extends('seller.layouts')
 @section('content')
     <div class="h-full p-3 overflow-auto">
+        @php
+            $image = json_decode($product->images, true)[1];
+            if (strpos($image, 'https://') !== 0 && strpos($image, 'http://') !== 0) {
+                $imageUrl = Storage::url($image);
+            } else {
+                $imageUrl = $image;
+            }
+            
+        @endphp
         <div class="h-full bg-slate-800/80 overflow-auto">
             <div class="lg:h-full grid grid-flow-row lg:grid-cols-2">
                 <div class="p-2 max-h-max lg:max-h-full overflow-auto flex justify-center items-center">
-                    <img src="{{ Storage::url(json_decode($product->images, true)[1]) }}" alt=""
-                        class="w-full h-full object-contain">
+                    <img src="{{ $imageUrl }}" alt="" class="w-full h-full object-contain">
                 </div>
                 <div class="p-3 h-full overflow-auto">
                     <div class="h-full bg-slate-900/80 text-slate-400 rounded-lg p-4 overflow-auto">
@@ -24,8 +32,8 @@
                         </div>
                         <div class="flex justify-end">
 
-                            <a href="{{route('products.edit', $product->id)}}"
-                                class="bg-indigo-500 text-white h-fit px-4 py-2 rounded-md mr-2 hover:bg-indigo-600"> 
+                            <a href="{{ route('products.edit', $product->id) }}"
+                                class="bg-indigo-500 text-white h-fit px-4 py-2 rounded-md mr-2 hover:bg-indigo-600">
                                 <i class="fa fa-edit"></i>&nbsp; Edit</a>
                             <form action="" method="POST">
                                 @csrf

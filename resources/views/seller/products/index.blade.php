@@ -30,9 +30,19 @@
                         class="grid container grid-cols-1 gap-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-8">
                         {{-- Display Products --}}
                         @foreach ($products as $product)
+                            @php
+                                $image = json_decode($product->images, true)[1];
+                                if (strpos($image, 'https://') !== 0 && strpos($image, 'http://') !== 0) {
+                                    $imageUrl = Storage::url($image);
+                                } else {
+                                    $imageUrl = $image;
+                                }
+                            @endphp
+
                             <a href="/seller/products/{{ $product->id }}"
                                 class="w-32 lg:36 mx-auto my-2 shadow-2xl bg-slate-800 text-gray-200 overflow-hidden rounded-md">
-                                <img src="{{ Storage::url(json_decode($product->images, true)[1]) }}" alt="" class="h-32 lg:36 w-full object-contain rounded-b-xl">
+                                <img src="{{ $imageUrl }}" alt=""
+                                    class="h-32 lg:36 w-full object-contain rounded-b-xl">
                                 <div class="px-2 py-1">
                                     <h5 class="text-md truncate">{{ $product->product_name }}</h5>
                                     <p class="text-end"></p>

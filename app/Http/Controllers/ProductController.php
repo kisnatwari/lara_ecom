@@ -78,7 +78,7 @@ class ProductController extends Controller
         if (auth()->user()->seller->id !== $product->seller_id) {
             return response(["message" => "You are not authorized to perform this action"], 403);
         }
-        return view("seller.products.product", compact('product'));
+        return view("seller.products.view", compact('product'));
     }
 
     /**
