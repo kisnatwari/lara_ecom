@@ -7,7 +7,7 @@ use App\Models\Seller;
 use App\Models\ShopCategory;
 use Illuminate\Http\Request;
 
-class HomepageController extends Controller
+class PagesController extends Controller
 {
     //
     public function homepage()
@@ -45,7 +45,6 @@ class HomepageController extends Controller
             ->inRandomOrder()
             ->limit(50)
             ->get();
-
 
         return view('welcome', compact('shopcategories', 'vendors', 'productsFromMunicipality', 'productsFromOtherMunicipalities', 'randomProducts', 'productsFromDistrict'));
     }

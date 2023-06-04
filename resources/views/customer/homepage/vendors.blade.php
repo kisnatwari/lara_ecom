@@ -1,10 +1,10 @@
-<div class="w-full bg-slate-800 py-2">
+<div class="w-full bg-slate-100 dark:bg-slate-800 py-2 text-slate-800 dark:text-slate-200">
     <div class="container mx-auto">
         <h1 class="text-center text-lg mb-3">Available Vendors</h1>
         <div class="vendors-carousel">
             @foreach ($vendors as $vendor)
                 <div>
-                    <div class="w-40 shadow shadow-slate-600">
+                    <div class="w-40 ">
                         <img src="/storage/category.png" alt="" class="w-full h-24 object-cover">
                         <p class="font-bold px-2 py-1 text-start text-xs">{{ $vendor->shop_name }}</p>
                     </div>

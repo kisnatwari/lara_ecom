@@ -2,9 +2,9 @@
 
 @section('children')
     <div class="flex flex-col gap-2 mt-2">
-        @include('customer.videobackground')
-        @include('customer.categories')
-        @include('customer.vendors')
-        @include('customer.products')
+        @include('customer.homepage.videobackground')
+        @include('customer.homepage.categories')
+        @include('customer.homepage.vendors')
+        @include('customer.homepage.products')
     </div>
 @endsection

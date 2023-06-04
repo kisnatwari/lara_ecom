@@ -1,18 +1,18 @@
-<div class="w-full bg-slate-800 py-2">
-    <div class="container mx-auto">
-      <h1 class="text-center text-lg mb-3">Categories</h1>
-      <div class="category-carousel">
-        @foreach ($shopcategories as $shopcategory )
+<div class="w-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 py-2">
+  <div class="container mx-auto">
+    <h1 class="text-center text-lg mb-3">Categories</h1>
+    <div class="category-carousel">
+      @foreach ($shopcategories as $shopcategory )
         <div>
           <div class="w-24">
             <img src="/storage/category.png" alt="" class="w-full h-24 object-cover">
             <p class="font-bold px-2 py-1 text-center text-xs">{{ $shopcategory->name }}</p>
           </div>
         </div>
-        @endforeach
-      </div>
+      @endforeach
     </div>
   </div>
+</div>
   
   <script type="text/javascript">
     $(document).ready(function() {

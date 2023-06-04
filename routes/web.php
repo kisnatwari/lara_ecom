@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\HomepageController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\SellerProductController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Municipality;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomepageController::class, 'homepage']);
+Route::get('/', [PagesController::class, 'homepage']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -27,12 +27,12 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/seller', 'seller.layouts')->name('seller-layouts');
     Route::view('/seller/dashboard', 'seller.dashboard')->name('seller-dashboard');
-    Route::get('/seller/products', [ProductController::class, 'index'])->name('seller-products');
-    Route::get('/seller/products/create', [ProductController::class, 'create'])->name('products.create');
-    Route::get("/seller/products/{product}", [ProductController::class, 'show'])->name('products.view');
-    Route::get("/seller/products/{product}/edit", [ProductController::class, 'edit'])->name('products.edit');
-    Route::delete("/products/{product}", [ProductController::class, 'destroy'])->name('products.destroy');
-    Route::resource('/products', ProductController::class);
+    Route::get('/seller/products', [SellerProductController::class, 'index'])->name('seller-products');
+    Route::get('/seller/products/create', [SellerProductController::class, 'create'])->name('products.create');
+    Route::get("/seller/products/{product}", [SellerProductController::class, 'show'])->name('products.view');
+    Route::get("/seller/products/{product}/edit", [SellerProductController::class, 'edit'])->name('products.edit');
+    Route::delete("/products/{product}", [SellerProductController::class, 'destroy'])->name('products.destroy');
+    Route::resource('/products', SellerProductController::class);
 
     Route::get("/seller/categories", [CategoryController::class, 'index'])->name('categories.index');
     Route::post("/category", [CategoryController::class, 'store'])->name('categories.store');

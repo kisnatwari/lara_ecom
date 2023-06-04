@@ -18,7 +18,7 @@ class SellersTableSeeder extends Seeder
         $sellers = [];
 
         for ($i = 1; $i <= 4500; $i++) {
-            $shopName = $faker->words(rand(3, 4), true);
+            $shopName = $faker->company;
             $sellers[] = [
                 'user_id' => $i, // Assuming the user records have sequential IDs from 1 to 100
                 'shop_category_id' => rand(1, 22), // Replace with the desired range of shop_category IDs

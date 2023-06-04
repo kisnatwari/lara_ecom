@@ -25,7 +25,7 @@ class UsersTableSeeder extends Seeder
 
         for ($i = 1; $i <= 5000; $i++) {
             $users[] = [
-                'name' => $faker->words(2, true),
+                'name' => $faker->name,
                 'email' => 'user'.$i.'@example.com',
                 'password' => $password,
                 'phone' => rand(9806400000, 9880000000),
