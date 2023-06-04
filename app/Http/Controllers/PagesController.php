@@ -21,7 +21,7 @@ class PagesController extends Controller
 
         $productsFromMunicipality = Product::whereIn('seller_id', $vendors->pluck('id')->toArray())
             ->orderBy('seller_id', 'asc')
-            ->limit(50)
+            ->limit(30)
             ->get();
 
         $otherVendors = Seller::whereHas('user', function ($query) use ($municipalityId) {
@@ -43,7 +43,7 @@ class PagesController extends Controller
 
         $randomProducts = Product::whereNotIn('id', $excludedProductIds)
             ->inRandomOrder()
-            ->limit(50)
+            ->limit(30)
             ->get();
 
         return view('welcome', compact('shopcategories', 'vendors', 'productsFromMunicipality', 'productsFromOtherMunicipalities', 'randomProducts', 'productsFromDistrict'));

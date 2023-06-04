@@ -4,10 +4,10 @@
             <span>Products in your area</span>
             <a href="#" class="text-sm dark:text-indigo-300 text-indigo-700">See All</a>
         </h1>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 2xl:grid-cols-10 gap-2">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2">
             @foreach ($productsFromMunicipality as $product)
                 <a href="/products/{{ $product->id }}"
-                    class="mx-auto my-2 shadow bg-slate-100/60 dark:bg-slate-900/60 dark:text-slate-200 text-slate-700 overflow-hidden rounded-md">
+                    class="mx-auto my-2 shadow w-44 sm:w-52 md:w-[185px] lg:w-[200px] xl:w-52 2xl:w-[185px] bg-white dark:bg-slate-900/60 dark:text-slate-200 text-slate-700 overflow-hidden rounded-md">
 
                     @php
                         $image = json_decode($product->images, true)[1];
@@ -18,7 +18,7 @@
                         }
                         
                     @endphp
-                    <img src="{{ $imageUrl }}" alt="" class="h-32 lg:36 w-full object-cover rounded-b">
+                    <img src="{{ $imageUrl }}" alt="" class="w-full h-44 sm:h-52 md:h-[185px] lg:h-[200px] xl:h-52 2xl:h-[185px] object-cover rounded-b">
                     <div class="px-2 py-1">
                         <h5 class="text-md line-clamp-1">{{ $product->product_name }}</h5>
                         <p class="text-sm font-bold"><small class="text-muted">Rs {{ $product->price }}</small></p>
@@ -38,10 +38,10 @@
             <a href="#" class="text-sm dark:text-indigo-300 text-indigo-700">See All</a>
         </h1>
         <div
-            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 2xl:grid-cols-10 gap-2">
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2">
             @foreach ($productsFromDistrict as $product)
                 <a href="/products/{{ $product->id }}"
-                    class="mx-auto my-2 shadow bg-slate-100/60 dark:bg-slate-900/60 dark:text-slate-200 text-slate-700 overflow-hidden rounded-md">
+                    class="mx-auto my-2 shadow w-44 sm:w-52 md:w-[185px] lg:w-[200px] xl:w-52 2xl:w-[185px] dark:bg-slate-900/60 dark:text-slate-200 text-slate-700 overflow-hidden rounded-md bg-white">
 
                     @php
                         $image = json_decode($product->images, true)[1];
@@ -52,7 +52,7 @@
                         }
                         
                     @endphp
-                    <img src="{{ $imageUrl }}" alt="" class="h-32 lg:36 w-full object-cover rounded-b">
+                    <img src="{{ $imageUrl }}" alt="" class="w-full h-44 sm:h-52 md:h-[185px] lg:h-[200px] xl:h-52 2xl:h-[185px] w-full object-cover rounded-b">
                     <div class="px-2 py-1">
                         <h5 class="text-md line-clamp-1" title="{{ $product->product_name }}">
                             {{ $product->product_name }}</h5>
@@ -79,10 +79,10 @@
             <a href="#" class="text-sm dark:text-indigo-300 text-indigo-700">See All</a>
         </h1>
         <div
-            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 2xl:grid-cols-10 gap-2">
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2">
             @foreach ($randomProducts as $product)
                 <a href="/products/{{ $product->id }}"
-                    class="mx-auto my-2 shadow bg-slate-100/60 dark:bg-slate-900/60 dark:text-slate-200 text-slate-700 overflow-hidden rounded-md">
+                    class="mx-auto my-2 shadow w-44 sm:w-52 md:w-[185px] lg:w-[200px] xl:w-52 2xl:w-[185px] dark:bg-slate-900/60 dark:text-slate-200 text-slate-700 overflow-hidden rounded-md bg-white">
 
                     @php
                         $image = json_decode($product->images, true)[1];
@@ -95,7 +95,7 @@
                         $addressGroup = $product->seller->user->municipality->district->district_name . ' (' . $product->seller->user->municipality->municipality_name . ')';
                         
                     @endphp
-                    <img src="{{ $imageUrl }}" alt="" class="h-32 lg:36 w-full object-cover rounded-b">
+                    <img src="{{ $imageUrl }}" alt="" class="h-44 sm:h-52 md:h-[185px] lg:h-[200px] xl:h-52 2xl:h-[185px] w-full object-cover rounded-b">
                     <div class="px-2 py-1">
                         <h5 class="text-md line-clamp-1" title="{{ $product->product_name }}">
                             {{ $product->product_name }}</h5>
