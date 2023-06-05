@@ -1,4 +1,4 @@
-<div class="w-full bg-slate-100 dark:bg-slate-800 text-slate800 dark:text-slate-200 py-2">
+<div class="w-full bg-slate-50 dark:bg-slate-800 text-slate800 dark:text-slate-200 py-2">
     <div class="container mx-auto">
         <h1 class="text-center text-lg flex justify-between items-end">
             <span>Products in your area</span>
@@ -10,7 +10,7 @@
                     class="mx-auto my-2 shadow w-44 sm:w-52 md:w-[185px] lg:w-[200px] xl:w-52 2xl:w-[185px] bg-white dark:bg-slate-900/60 dark:text-slate-200 text-slate-700 overflow-hidden rounded-md">
 
                     @php
-                        $image = json_decode($product->images, true)[1];
+                        $image = json_decode($product->images, true)[0];
                         if (strpos($image, 'https://') !== 0 && strpos($image, 'http://') !== 0) {
                             $imageUrl = Storage::url($image);
                         } else {
@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<div class="w-full bg-slate-100 dark:bg-slate-800 text-slate800 dark:text-slate-200 py-2">
+<div class="w-full bg-slate-50 dark:bg-slate-800 text-slate800 dark:text-slate-200 py-2">
     <div class="container mx-auto">
         <h1 class="text-center text-lg flex justify-between items-end">
             <span>Products in your District</span>
@@ -44,7 +44,7 @@
                     class="mx-auto my-2 shadow w-44 sm:w-52 md:w-[185px] lg:w-[200px] xl:w-52 2xl:w-[185px] dark:bg-slate-900/60 dark:text-slate-200 text-slate-700 overflow-hidden rounded-md bg-white">
 
                     @php
-                        $image = json_decode($product->images, true)[1];
+                        $image = json_decode($product->images, true)[0];
                         if (strpos($image, 'https://') !== 0 && strpos($image, 'http://') !== 0) {
                             $imageUrl = Storage::url($image);
                         } else {
@@ -52,7 +52,7 @@
                         }
                         
                     @endphp
-                    <img src="{{ $imageUrl }}" alt="" class="w-full h-44 sm:h-52 md:h-[185px] lg:h-[200px] xl:h-52 2xl:h-[185px] w-full object-cover rounded-b">
+                    <img src="{{ $imageUrl }}" alt="" class="w-full h-44 sm:h-52 md:h-[185px] lg:h-[200px] xl:h-52 2xl:h-[185px] object-cover rounded-b">
                     <div class="px-2 py-1">
                         <h5 class="text-md line-clamp-1" title="{{ $product->product_name }}">
                             {{ $product->product_name }}</h5>
@@ -72,7 +72,7 @@
 </div>
 
 
-<div class="w-full bg-slate-100 dark:bg-slate-800 text-slate800 dark:text-slate-200 py-2">
+<div class="w-full bg-slate-50 dark:bg-slate-800 text-slate800 dark:text-slate-200 py-2">
     <div class="container mx-auto">
         <h1 class="text-center text-lg flex justify-between items-end">
             <span>Some Other Random Products</span>
@@ -85,7 +85,7 @@
                     class="mx-auto my-2 shadow w-44 sm:w-52 md:w-[185px] lg:w-[200px] xl:w-52 2xl:w-[185px] dark:bg-slate-900/60 dark:text-slate-200 text-slate-700 overflow-hidden rounded-md bg-white">
 
                     @php
-                        $image = json_decode($product->images, true)[1];
+                        $image = json_decode($product->images, true)[0];
                         if (strpos($image, 'https://') !== 0 && strpos($image, 'http://') !== 0) {
                             $imageUrl = Storage::url($image);
                         } else {

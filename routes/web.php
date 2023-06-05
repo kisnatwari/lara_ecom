@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [PagesController::class, 'homepage']);
+Route::get('/products', [PagesController::class, 'productspage']);
+Route::get('/products/{product}', [PagesController::class, 'productview']) -> name('products.view');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -31,14 +33,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/seller/products/create', [SellerProductController::class, 'create'])->name('products.create');
     Route::get("/seller/products/{product}", [SellerProductController::class, 'show'])->name('products.view');
     Route::get("/seller/products/{product}/edit", [SellerProductController::class, 'edit'])->name('products.edit');
-    Route::delete("/products/{product}", [SellerProductController::class, 'destroy'])->name('products.destroy');
-    Route::resource('/products', SellerProductController::class);
+    Route::delete("/seller/products/{product}", [SellerProductController::class, 'destroy'])->name('products.destroy');
 
     Route::get("/seller/categories", [CategoryController::class, 'index'])->name('categories.index');
-    Route::post("/category", [CategoryController::class, 'store'])->name('categories.store');
-    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])
+    Route::post("/seller/category", [CategoryController::class, 'store'])->name('categories.store');
+    Route::delete('/seller/categories/{category}', [CategoryController::class, 'destroy'])
     ->name('categories.destroy');
-    Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::put('/seller/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
 });
 
 Route::middleware('auth')->group(function () {

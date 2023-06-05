@@ -1,4 +1,4 @@
-<div class="w-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 py-2">
+<div class="w-full bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 py-2">
   <div class="container mx-auto">
     <h1 class="text-center text-lg mb-3">Categories</h1>
     <div class="category-carousel">

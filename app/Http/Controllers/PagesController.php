@@ -48,4 +48,17 @@ class PagesController extends Controller
 
         return view('welcome', compact('shopcategories', 'vendors', 'productsFromMunicipality', 'productsFromOtherMunicipalities', 'randomProducts', 'productsFromDistrict'));
     }
+
+
+    public function productspage()
+    {
+        if(auth() -> user()){
+            
+        }
+        return view('customer.products.index');
+    }
+
+    public function productview(Product $product){
+        return view('customer.products.view', compact('product'));
+    }
 }
