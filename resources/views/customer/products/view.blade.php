@@ -31,7 +31,7 @@
                             <div class="cursor-pointer max-h-16"
                                 onclick="document.getElementById('main-image').src='{{ $imageUrl }}'">
                                 <img src="{{ $imageUrl }}" alt=""
-                                    class="w-full h-full max-h-16 max-w-16 object-contain {{$c++ == 0 ? 'border-2 border-purple-500':''}}">
+                                    class="w-full h-full max-h-16 max-w-16 object-contain {{ $c++ == 0 ? 'border-2 border-purple-500' : '' }}">
                             </div>
                         @endforeach
                     </div>
@@ -52,18 +52,20 @@
                         <div class="p-2 my-3 dark:bg-gray-800 rounded-md dark:text-gray-300 text-gray-900">
                             <pre class="whitespace-pre-wrap text-justify">{{ $product->description }}</pre>
                         </div>
-                        <div class="flex items-center justify-end mt-4 gap-3">
+                        <form method="POST" action="/cart" class="flex items-center justify-end mt-4 gap-3">
                             <div class="flex items-center">
                                 <span class="mr-3">Quantity:</span>
-                                <input type="number"
-                                    class="w-16 px-3 py-2 border rounded-md bg-transparent dark:text-gray-50 text-gray-700 focus:outline-none focus:border-purple-500"
-                                    value="1" min="1" max={{ $product->quantity }}>
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{$product -> id}}">
+                                <input type="number" name="quantity" value="1" min="1"
+                                    max={{ $product->quantity }}
+                                    class="w-16 px-3 py-2 border rounded-md bg-transparent dark:text-gray-50 text-gray-700 focus:outline-none focus:border-purple-500">
                             </div>
                             <button
                                 class="bg-gradient-to-tr from-indigo-500 via-indigo-600 to-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
                                 <i class="fa fa-shopping-cart"></i> Add to cart
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

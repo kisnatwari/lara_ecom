@@ -4,20 +4,38 @@
 @tailwind utilities;
 
 ::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background-color: #1a202c;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background-color: #667eea;
-    border-radius: 10px;
-    border: 3px solid #1a202c;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: #9f7aea;
-    border-color: #9f7aea;
-  }
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #1a202c;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #667eea;
+  border-radius: 10px;
+  border: 3px solid #1a202c;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #9f7aea;
+  border-color: #9f7aea;
+}
+
+/* Cart Sidebar */
+.fixed {
+  position: fixed;
+}
+
+/* Dark Mode */
+.dark .fixed {
+  color: #e5e7eb;
+}
+
+.dark .fixed.bg-white {
+  background-color: #374151;
+}
+
+.dark .fixed.dark:text-slate-300 {
+  color: #d1d5db;
+}
