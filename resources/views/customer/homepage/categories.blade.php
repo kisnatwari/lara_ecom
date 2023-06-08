@@ -5,7 +5,7 @@
       @foreach ($shopcategories as $shopcategory )
         <div>
           <div class="w-24">
-            <img src="/storage/category.png" alt="" class="w-full h-24 object-cover">
+            <img src="{{Storage::url("/categories/". $shopcategory->name . ".jpg")}}" alt="" class="w-full h-24 object-cover">
             <p class="font-bold px-2 py-1 text-center text-xs">{{ $shopcategory->name }}</p>
           </div>
         </div>
