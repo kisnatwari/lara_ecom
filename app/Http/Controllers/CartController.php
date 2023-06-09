@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -13,9 +14,25 @@ class CartController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $cartData = $user->carts->load('product.seller')->groupBy('product.seller.id');
-        return $cartData;
+        $userId = auth()->user()->id;
+
+        $cartItems = Cart::where('carts.user_id', $userId)
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->join('sellers', 'products.seller_id', '=', 'sellers.id')
+            ->select(
+                'sellers.shop_name',
+                'products.product_name',
+                'carts.quantity as units',
+                'products.price as unit_price',
+                DB::raw('carts.quantity * products.price as total_price'),
+                'products.id as product_id',
+            )
+            ->orderBy('sellers.shop_name')
+            ->get()
+            ->groupBy('shop_name')
+            ->toArray();
+
+        return view('customer.cart', compact('cartItems'));
     }
 
     /**
