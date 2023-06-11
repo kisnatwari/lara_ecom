@@ -27,6 +27,7 @@
 <body class="font-sans antialiased" x-data="{ darkMode: false }" x-init="if (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) { localStorage.setItem('darkMode', JSON.stringify(true)); } darkMode = JSON.parse(localStorage.getItem('darkMode')); $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" x-cloak>
   <div x-bind:class="{ 'dark': darkMode === true }" class="h-screen">
     <div class="bg-slate-200 dark:bg-slate-700 dark:text-slate-300 overflow-auto h-full flex flex-col">
+      @include('customer.toast')
       @include('customer.navbar')
       @yield('children')
     </div>

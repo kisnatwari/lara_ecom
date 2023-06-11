@@ -26,6 +26,7 @@ class CartController extends Controller
                 'products.price as unit_price',
                 DB::raw('carts.quantity * products.price as total_price'),
                 'products.id as product_id',
+                'products.images'
             )
             ->orderBy('sellers.shop_name')
             ->get()
@@ -103,16 +104,36 @@ class CartController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Cart $cart)
+    public function update(Request $request, $productId)
     {
-        //
+        // Validate the request data
+        $validatedData = $request->validate([
+            'quantity' => 'required|integer',
+        ]);
+
+        // Get the user ID
+        $userId = auth()->user()->id;
+
+        // Update the cart item with the new quantity
+        Cart::where('user_id', $userId)
+            ->where('product_id', $productId)
+            ->update(['quantity' => $validatedData['quantity']]);
+
+        return redirect()->back()->with('success', 'Cart item quantity updated.');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cart $cart)
+    public function destroy($productId)
     {
-        //
+        $userId = auth()->user()->id;
+
+        Cart::where('user_id', $userId)
+            ->where('product_id', $productId)
+            ->delete();
+
+        return redirect()->back()->with('success', 'Item removed from cart.');
     }
 }
