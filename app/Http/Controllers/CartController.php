@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,7 @@ class CartController extends Controller
             ->join('sellers', 'products.seller_id', '=', 'sellers.id')
             ->select(
                 'sellers.shop_name',
+                'sellers.id',
                 'products.product_name',
                 'carts.quantity as units',
                 'products.price as unit_price',
@@ -135,5 +137,55 @@ class CartController extends Controller
             ->delete();
 
         return redirect()->back()->with('success', 'Item removed from cart.');
+    }
+
+
+    public function order(Request $request)
+    {
+        $userId = auth()->user()->id;
+        $shopId = $request->shop_id;
+
+        if ($shopId) {
+            $cartItems = Cart::where('user_id', $userId)
+                ->whereHas('product', function ($query) use ($shopId) {
+                    $query->where('seller_id', $shopId);
+                })->get();
+
+            // Loop through the cart items and create an order for each item
+            foreach ($cartItems as $cartItem) {
+                Order::create([
+                    'user_id' => $userId,
+                    'product_id' => $cartItem->product_id,
+                    'quantity' => $cartItem->quantity,
+                ]);
+
+                // Remove the ordered item from the cart
+                $cartItem->delete();
+            }
+
+            return redirect()->back()->with('success', 'Products ordered successfully.');
+        }
+
+        return response(["error" => "invalid seller data"], 400);
+    }
+
+    public function orderAll(Request $request)
+    {
+        $userId = auth()->user()->id;
+        $cartItems = Cart::where('user_id', $userId)->get();
+
+        // Loop through the cart items and create an order for each item
+        foreach ($cartItems as $cartItem) {
+            Order::create([
+                'user_id' => $userId,
+                'product_id' => $cartItem->product_id,
+                'quantity' => $cartItem->quantity,
+            ]);
+
+            // Remove the ordered item from the cart
+            $cartItem->delete();
+        }
+
+        return redirect()->back()->with('success', 'All products ordered successfully.');
     }
 }
