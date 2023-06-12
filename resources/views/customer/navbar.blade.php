@@ -12,10 +12,10 @@ if(auth()->check()) {
 
 <div class="py-4 border border-slate-400 dark:border-slate-800 bg-white dark:bg-slate-800 dark:text-slate-300">
 <nav class="container mx-auto flex items-center justify-between flex-wrap">
-    <div class="flex items-center flex-shrink-0 gap-2 mr-6 backdrop-blur-md">
+    <a href="/" class="flex items-center flex-shrink-0 gap-2 mr-6 backdrop-blur-md">
         <i class="fa fa-basket"></i>
         <span class="font-semibold tracking-tight font-righteous text-4xl"> Upabhog</span>
-    </div>
+    </a>
     <div class="flex items-center gap-3">
         <button @click="darkMode = !darkMode">
             <i x-show="!darkMode" class="fa fa-moon"></i>
