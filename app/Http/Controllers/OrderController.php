@@ -12,7 +12,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $seller = auth() -> user()->seller;
+        $orders = $seller -> orders;
+        return view('seller.orders.index', compact('orders'));
     }
 
     /**

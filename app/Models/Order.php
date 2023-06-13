@@ -32,4 +32,9 @@ class Order extends Model
     {
         return $this->hasOneThrough(Seller::class, Product::class, 'id', 'id', 'product_id', 'seller_id');
     }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\SellerProductController;
 use App\Http\Controllers\ProfileController;
@@ -45,6 +46,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/seller/categories/{category}', [CategoryController::class, 'destroy'])
     ->name('categories.destroy');
     Route::put('/seller/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+
+
+    Route::get("/seller/orders", [OrderController::class, 'index'])->name('orders.index');
 });
 
 Route::middleware('auth')->group(function () {
