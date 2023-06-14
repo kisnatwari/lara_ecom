@@ -41,7 +41,19 @@
                     @endforeach
                 </ul>
             </div>
-            <div class="text-center">
+            <div class="text-center flex flex-col">
+                <button class="mb-5" @click="darkMode = !darkMode">
+                    <div x-show="!darkMode" class="bg-slate-800 text-slate-200 px-2 py-1 rounded-md">
+                        <i class="fa fa-moon"></i>
+                        <span class="font-bold text-lg ml-1">Dark Theme</span>
+                    </div>
+                    
+                    <div x-show="darkMode" class="bg-slate-200 text-slate-800 px-2 py-1 rounded-md">
+                        <i class="fa fa-sun"></i>
+                        <span class="font-bold text-lg ml-1">Light Theme</span>
+                    </div>
+                    
+                </button>
                 <small>
                     COPYRIGHT <br />
                     &copy; Krishna Tiwari
