@@ -1,127 +1,117 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('seller-register') }}">
-        @csrf
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+{{-- <div class="w-full h-screen overflow-auto"
+    style="background-image:url({{ asset('assets/auth-bg.jpg') }});background-position:center;background-size:cover;background-attachment:fixed">
+    asdf
+</div>
+ --}}
+
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+
+<body class="font-sans text-gray-900 antialiased" x-init="if (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    localStorage.setItem('darkMode', JSON.stringify(true));
+}
+darkMode = JSON.parse(localStorage.getItem('darkMode'));
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" x-cloak>
+    <div x-bind:class="{ 'dark': darkMode === true }">
+        <div class="w-full h-screen overflow-auto"
+            style="background-image:url('{{ asset('assets/auth-bg.jpg') }}');background-position:center;background-size:cover;background-attachment:fixed">
+            <div class="bg-black bg-opacity-90 h-full min-h-full flex justify-center items-center">
+                <div>
+                    <form class="flex flex-col gap-3 mx-3" enctype="multipart/form-data">
+                        <div class="flex flex-col items-center justify-center">
+                            <h1 class="text-white text-4xl font-bold">Seller Registeration</h1>
+                            <p class="text-white text-lg">Please fill out this form to register.</p>
+                        </div>
+                        <div class=" bg-slate-700 bg-opacity-50 p-5 md:max-w-[670px]">
+                            <p class="border-b border-dashed text-slate-300 border-slate-300 mb-2">Shop Details</p>
+                            <div class="grid grid-flow-col gap-4 mb-3">
+                                <div class="grid-cols">
+                                    <div class="flex gap-3 flex-col">
+                                        <x-input-group id="shop_name" placeholder="ABC Enterprises" label="Shop Name" />
+                                        <x-input-group id="owner_name" placeholder="John Doe" label="Owner Name" />
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2">
+                                    <div
+                                        class="relative h-32 border-dashed border-slate-500 border-4 bg-slate-800 bg-opacity-50 overflow-hidden cursor-pointer">
+                                        <span
+                                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm text-center text-white">Upload
+                                            Profile Photo</span><input type="file"
+                                            class="z-20 relative w-full h-full opacity-0" name="profile_pic">
+                                    </div>
+                                    <div
+                                        class="relative h-32 border-dashed border-slate-500 border-4 bg-slate-800 bg-opacity-50 overflow-hidden cursor-pointer">
+                                        <span
+                                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm text-center text-white">Upload
+                                            Profile Photo</span><input type="file"
+                                            class="z-20 relative w-full h-full opacity-0" name="profile_pic">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="border-b border-dashed text-slate-300 border-slate-300 mb-2">Authentication</p>
+                            <div class="grid grid-flow-col gap-4 mb-3">
+                                <div class="grid-cols">
+                                    <div class="flex gap-3 flex-col">
+                                        <x-input-group id="email" placeholder="example@domain.com"
+                                            label="Email Address" />
+                                        <x-input-group id="phone" placeholder="9801234567"
+                                            label="Phone Number (+977)" />
+                                    </div>
+                                </div>
+                                <div class="grid-cols">
+                                    <div class="flex gap-3 flex-col">
+                                        <x-input-group id="password" type="password" placeholder="***************"
+                                            label="Password" />
+                                        <x-input-group id="confirm_password" type="password"
+                                            placeholder="***************" label="Confirm Password" />
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="border-b border-dashed text-slate-300 border-slate-300 mb-2">Address</p>
+                            <div class="grid grid-flow-col gap-4 mb-3">
+                                <div class="flex gap-1 flex-wrap">
+                                    <select name="district" class="dark:bg-slate-700 border-0 rounded-md p-2">
+                                        <option value="">Choose a district</option>
+                                    </select>
+                                    <select name="municipality" class="dark:bg-slate-700 border-0 rounded-md p-2">
+                                        <option>Choose a municipality</option>
+                                    </select>
+                                    <input type="text" placeholder="Ward/Tole/Chok name"
+                                        class="dark:bg-slate-700 border-0 rounded-md p-2 max-w-[200px]" required=""
+                                        name="ward">
+                                </div>
+                            </div>
+                            <div class="flex justify-between flex-row-reverse">
+                                <button
+                                    class="px-5 py-2 rounded-md duration-200 hover:brightness-95 active:brightness-90 bg-indigo-700 text-white border-0">Register
+                                    Shop</button>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 text-sm text-end flex justify-between flex-wrap flex-row-reverse">
+                            <a href="/login">Already have an account? Login</a>
+                        </p>
+                    </form>
+                </div>
             </div>
-        @endif
-
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Propriter Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
-                autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
+    </div>
+</body>
 
-        <!-- Shop Name -->
-        <div class="mt-4">
-            <x-input-label for="shop_name" :value="__('Shop Name')" />
-            <x-text-input id="shop_name" class="block mt-1 w-full" type="text" name="shop_name" :value="old('shop_name')"
-                required autofocus autocomplete="shop_name" />
-            <x-input-error :messages="$errors->get('shop_name')" class="mt-2" />
-        </div>
-
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
-                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <!-- Address -->
-        <div class="mt-4">
-            <x-input-label :value="__('Choose your address')" />
-            <select name="district" id="district" class="bg-gray-800 text-gray-200">
-                @foreach ($districts as $district)
-                    <option value="{{ $district->id }}">{{ $district->district_name }}</option>
-                @endforeach
-            </select>
-            <select id="municipality" name="municipality_id" class="bg-gray-800 text-gray-200">
-                @foreach ($municipalities as $municipality)
-                    <option value="{{ $municipality->id }}">{{ $municipality->municipality_name }}</option>
-                @endforeach
-            </select>
-            <input type="hidden" name="ward" value="dummy ward">
-            
-        </div>
-
-        {{-- Shop Type --}}
-        <div class="mt-4">
-            <x-input-label :value="__('Type of your shop')" />
-            <select name="shop_category" id="shop_category" class="bg-gray-800 text-gray-200">
-                @foreach ($shopCategories as $shopCategory)
-                    <option value="{{ $shopCategory->id }}">{{ $shopCategory->name }}</option>
-                @endforeach
-            </select>
-        </div>
-
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ml-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-    <script>
-        $(document).ready(function() {
-            $('#district').on('change', function() {
-                const selectedDistrict = $(this).val();
-                const url = '/get-municipalities/' + selectedDistrict;
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    success: function(response) {
-                        const municipalities = response;
-                        const $municipalitySelect = $('#municipality');
-
-                        $municipalitySelect.empty();
-
-                        municipalities.forEach(function(municipality) {
-                            $municipalitySelect.append(
-                                $('<option>', {
-                                    value: municipality.id,
-                                    text: municipality.municipality_name
-                                })
-                            );
-                        });
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-            });
-        });
-    </script>
-</x-guest-layout>
+</html>
