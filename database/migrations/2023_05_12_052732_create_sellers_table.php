@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('sellers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger('shop_category_id');
             $table->string('shop_name');
-            $table->timestamps();
+            $table->unsignedBigInteger('shop_category_id');
             $table->foreign('shop_category_id')->references('id')->on('shop_categories');
+            $table->timestamps();
         });
     }
 

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->foreignId('municipality_id')->constrained()->nullable();
             $table->string('ward')->nullable();
+            $table->string('profile_photo');
             $table->rememberToken();
             $table->timestamps();
         });

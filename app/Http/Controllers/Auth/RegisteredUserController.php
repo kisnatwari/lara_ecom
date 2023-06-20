@@ -30,13 +30,8 @@ class RegisteredUserController extends Controller
     public function createSeller(): View
     {
         $districts = District::select(['id', 'district_name'])->orderBy("district_name")->get();
-
-        $municipalities = Municipality::where('district_id', $districts[0]['id'])
-            ->select(['id', 'municipality_name'])
-            ->orderBy("municipality_name")->get();
-
         $shopCategories = ShopCategory::all();
-        return view('auth.seller-register', compact('districts', 'municipalities', 'shopCategories'));
+        return view('auth.seller-register', compact('districts', 'shopCategories'));
     }
 
     /**
@@ -69,23 +64,28 @@ class RegisteredUserController extends Controller
 
     public function storeSeller(Request $request): RedirectResponse
     {
+
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'regex:/^(?![0-9])[A-Za-z\s]+$/'],
             'shop_name' => ['required', 'string', 'max:255', 'regex:/^(?![0-9])[A-Za-z0-9\s]+$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'municipality_id' => ['required', 'exists:municipalities,id'],
+            'municipality' => ['required', 'exists:municipalities,id'],
             'shop_category' => ['required', 'exists:shop_categories,id'],
             'ward' => ['required', 'string', 'regex:/^(?![0-9])[A-Za-z\s0-9]+$/'],
         ]);
 
+        //return dd($request->all());
+        $profile_photo_path = $request -> file('profile_pic')->store('public/profile_pics');
 
+        //return dd($request -> all());
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
-            'municipality_id' => $request->municipality_id,
+            'municipality_id' => $request->municipality,
+            'profile_photo' => $profile_photo_path,
             'ward' => $request->ward,
         ]);
 
