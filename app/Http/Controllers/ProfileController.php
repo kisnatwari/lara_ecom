@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -56,5 +58,24 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+
+    public function updateAddress(Request $request){
+        $validator = Validator::make($request->all(), [
+            'ward' => ['required', 'string', 'regex:/^(?![0-9])[A-Za-z\s0-9]+$/', 'max:55', 'min:3'],
+            'municipality' => 'required|exists:municipalities,id'
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+    
+        User::where("id", auth() -> id())-> update([
+            'ward' => $request -> ward,
+            'municipality_id' => $request -> municipality
+        ]);
+    
+        return response()->json(['message' => 'Address updated successfully']);
     }
 }

@@ -17,7 +17,7 @@ class SellersTableSeeder extends Seeder
         $faker = Faker::create();
         $sellers = [];
 
-        for ($i = 1; $i <= 4500; $i++) {
+        for ($i = 1; $i <= 4900; $i++) {
             $shopName = $faker->company;
             $sellers[] = [
                 'user_id' => $i, // Assuming the user records have sequential IDs from 1 to 100

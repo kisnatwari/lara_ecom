@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Seller;
 use App\Models\ShopCategory;
-use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
@@ -13,7 +12,12 @@ class PagesController extends Controller
     public function homepage()
     {
         $shopcategories = ShopCategory::all();
-        $municipalityId = auth()->user()->municipality_id;
+        $municipalityId = auth()->user() && auth()->user()->municipality_id;
+
+        if (!$municipalityId) {
+            $randomProducts = Product::inRandomOrder()->limit(50)->get();
+            return view('welcome', compact('shopcategories', 'randomProducts'));
+        }
 
         $vendors = Seller::whereHas('user', function ($query) use ($municipalityId) {
             $query->where('municipality_id', $municipalityId);
@@ -52,13 +56,13 @@ class PagesController extends Controller
 
     public function productspage()
     {
-        if(auth() -> user()){
-            
+        if (auth()->user()) {
         }
         return view('customer.products.index');
     }
 
-    public function productview(Product $product){
+    public function productview(Product $product)
+    {
         return view('customer.products.view', compact('product'));
     }
 }

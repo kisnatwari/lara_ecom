@@ -1,3 +1,5 @@
+@isset($productsFromMunicipality)
+
 <div class="w-full bg-slate-50 dark:bg-slate-800 text-slate800 dark:text-slate-200 py-2">
     <div class="container mx-auto">
         <h1 class="text-center text-lg flex justify-between items-end">
@@ -30,7 +32,9 @@
         </div>
     </div>
 </div>
+@endisset
 
+@isset($productsFromDistrict)
 <div class="w-full bg-slate-50 dark:bg-slate-800 text-slate800 dark:text-slate-200 py-2">
     <div class="container mx-auto">
         <h1 class="text-center text-lg flex justify-between items-end">
@@ -70,12 +74,13 @@
         </div>
     </div>
 </div>
+@endisset
 
-
+@if(isset($randomProducts) && count($randomProducts) > 0)
 <div class="w-full bg-slate-50 dark:bg-slate-800 text-slate800 dark:text-slate-200 py-2">
     <div class="container mx-auto">
         <h1 class="text-center text-lg flex justify-between items-end">
-            <span>Some Other Random Products</span>
+            <span>Some Random Products</span>
             <a href="#" class="text-sm dark:text-indigo-300 text-indigo-700">See All</a>
         </h1>
         <div
@@ -115,3 +120,4 @@
         </div>
     </div>
 </div>
+@endif

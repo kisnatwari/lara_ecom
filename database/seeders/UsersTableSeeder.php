@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
                 'name' => $faker->name,
                 'email' => 'user'.$i.'@example.com',
                 'password' => $password,
-                'phone' => rand(9806400000, 9880000000),
+                'phone' => ($i - 1) % 758 + 1,
                 'municipality_id' => rand(1, 753), // Replace with the desired range of municipality IDs
                 'ward' => $faker->word(). " ward",
             ];
