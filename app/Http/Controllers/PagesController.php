@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Seller;
 use App\Models\ShopCategory;
@@ -65,4 +66,18 @@ class PagesController extends Controller
     {
         return view('customer.products.view', compact('product'));
     }
+
+
+    public function shop(Seller $shop)
+    {
+        $products = $shop->products()->paginate(20);
+        return view('customer.shops.index', compact('shop', 'products'));
+    }
+
+    public function categoryByShop(Seller $shop, Category $category)
+    {
+        $products = $shop->products()->where('category_id', $category -> id)->paginate(15);
+        return view('customer.shops.index', compact('shop', 'products'));
+    }
+
 }

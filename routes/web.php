@@ -28,6 +28,9 @@ Route::post('/cart/order', [CartController::class, 'order'])->name('cart.order')
 Route::post('/cart/orderAll', [CartController::class, 'orderAll'])->name('cart.orderAll');
 Route::post('/update-customer-address', [ProfileController::class, 'updateAddress'])->name('cart.updateCustomerAddress');
 
+Route::get('/shop/{shop}', [PagesController::class, 'shop'])->name('shop');
+Route::get('/shop/{shop}/category/{category}', [PagesController::class, 'categoryByShop'])->name('shop.category');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
