@@ -6,6 +6,6 @@
         @include('customer.homepage.categories')
         @include('customer.homepage.address')
         @include('customer.homepage.vendors')
-        @include('customer.homepage.products')
+        @include('customer.homepage.products.products')
     </div>
 @endsection

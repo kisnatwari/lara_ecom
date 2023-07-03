@@ -70,6 +70,9 @@ Route::get('/get-municipalities/{district_id}', function (int $district_id) {
 });
 
 
-Route::get("homepageApi/vendors", [homepageApi::class, 'vendors']);
+Route::get("/homepageApi/vendors", [homepageApi::class, 'vendors']);
+Route::get("/homepageApi/productsFromMunicipality", [homepageApi::class, 'productsFromMunicipality']);
+Route::get("/homepageApi/productsFromDistrict", [homepageApi::class, 'productsFromDistrict']);
+Route::get("/homepageApi/randomProducts", [homepageApi::class, 'randomProducts']);
 
 require __DIR__ . '/auth.php';
