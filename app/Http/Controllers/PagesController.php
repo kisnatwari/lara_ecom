@@ -20,7 +20,7 @@ class PagesController extends Controller
             return view('welcome', compact('shopcategories', 'randomProducts'));
         }
 
-        $vendors = Seller::whereHas('user', function ($query) use ($municipalityId) {
+        /* $vendors = Seller::whereHas('user', function ($query) use ($municipalityId) {
             $query->where('municipality_id', $municipalityId);
         })->get();
 
@@ -49,9 +49,9 @@ class PagesController extends Controller
         $randomProducts = Product::whereNotIn('id', $excludedProductIds)
             ->inRandomOrder()
             ->limit(30)
-            ->get();
+            ->get(); */
 
-        return view('welcome', compact('shopcategories', 'vendors', 'productsFromMunicipality', 'productsFromOtherMunicipalities', 'randomProducts', 'productsFromDistrict'));
+        return view('welcome', compact('shopcategories'));
     }
 
 

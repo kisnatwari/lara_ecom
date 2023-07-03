@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\SellerProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\skeletonApi\homepageApi;
 use App\Models\Municipality;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +69,7 @@ Route::get('/get-municipalities/{district_id}', function (int $district_id) {
     return response()->json($munitipalities);
 });
 
-//Route::view('/seller', 'seller.layouts');
+
+Route::get("homepageApi/vendors", [homepageApi::class, 'vendors']);
 
 require __DIR__ . '/auth.php';
