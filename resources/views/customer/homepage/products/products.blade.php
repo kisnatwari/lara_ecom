@@ -15,56 +15,58 @@
         }
     }
     $(document).ready(function() {
-    $.ajax({
-        url: '/homepageApi/productsFromMunicipality',
-        type: 'GET',
-        success: function(data) {
-            console.log(data);
-            replaceMunicipalityProducts(data);
-        },
-        error: function(xhr, status, error) {
-            console.log(xhr.responseText);
-            console.log(status);
-            console.log(error);            
-        },
-        complete:function(){
-            loadProductsFromDistrict();
+        @if (auth()->user() && auth()->user()->municipality)
+            $.ajax({
+                url: '/homepageApi/productsFromMunicipality',
+                type: 'GET',
+                success: function(data) {
+                    console.log(data);
+                    replaceMunicipalityProducts(data);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    console.log(status);
+                    console.log(error);
+                },
+                complete: function() {
+                    loadProductsFromDistrict();
+                }
+            });
+
+            function loadProductsFromDistrict() {
+                $.ajax({
+                    url: '/homepageApi/productsFromDistrict',
+                    type: 'GET',
+                    success: function(data) {
+                        console.log(data);
+                        replaceDistrictProducts(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
+                    },
+                    complete: function() {
+                        loadRandomProducts();
+                    }
+                });
+            }
+        @else
+            loadRandomProducts();
+        @endif
+        function loadRandomProducts() {
+            $.ajax({
+                url: '/homepageApi/randomProducts',
+                type: 'GET',
+                success: function(data) {
+                    replaceRandomProducts(data);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    console.log(status);
+                    console.log(error);
+                }
+            });
         }
     });
-
-    function loadProductsFromDistrict() {
-        $.ajax({
-            url: '/homepageApi/productsFromDistrict',
-            type: 'GET',
-            success: function(data) {
-                console.log(data);
-                replaceDistrictProducts(data);
-            },
-            error: function(xhr, status, error) {
-                console.log(xhr.responseText);
-                console.log(status);
-                console.log(error);
-            },
-            complete:function(){
-                loadRandomProducts();
-            }
-        });
-    }
-
-    function loadRandomProducts() {
-        $.ajax({
-            url: '/homepageApi/randomProducts',
-            type: 'GET',
-            success: function(data) {
-                replaceRandomProducts(data);
-            },
-            error: function(xhr, status, error) {
-                console.log(xhr.responseText);
-                console.log(status);
-                console.log(error);
-            }
-        });
-    }
-});
-
 </script>
