@@ -25,7 +25,7 @@
                             </div>
                             <div class="px-2 py-1">
                                 <p class="text-md line-clamp-1">${product.product_name}</p>
-                                <small class="line-clamp-1">${product.seller.shop_name}</small>
+                                <small class="line-clamp-1 dynamic-link" data-href="shop/${product.seller.id}">${product.seller.shop_name}</small>
                                 <small class="line-clamp-1">Rs ${product.price}</small>
                                 <small class="line-clamp-1">
                                     ${product.seller.user.municipality.municipality_name}

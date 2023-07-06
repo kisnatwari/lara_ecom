@@ -38,7 +38,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
     <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
     <script>
-        $(document).ready(function() {
+        function refreshDynamicLink() {
             $('.dynamic-link').click(function(e) {
                 e.preventDefault();
                 // Construct the redirect URL
@@ -46,8 +46,9 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
                 // Redirect to the constructed URL
                 window.location.href = redirectUrl;
+                return false;
             });
-        });
+        }
     </script>
 </body>
 
