@@ -4,9 +4,9 @@
     <div class="flex flex-col gap-1 mt-1">
         <div class="w-full bg-slate-50 dark:bg-slate-800">
             <div class="container mx-auto flex gap-3">
-                <div>
-                    <img src="https://cdn1.iconfinder.com/data/icons/people-avatar-color-outline/64/11-boy-128.png"
-                        alt="{{ $shop->shop_name }}" class="w-36 h-36 object-contain">
+                <div class="py-2">
+                    <img src="{{ Storage::url($shop->user->profile_photo) }}"
+                        alt="{{ $shop->shop_name }}" class="w-36 h-36 object-cover">
                 </div>
                 <div class="self-end my-2 flex flex-col gap-1 text-slate-700 dark:text-slate-300">
                     <h1 class="text-xl font-bold text-slate-800 dark:text-slate-200">

@@ -18,7 +18,7 @@ class homepageApi extends Controller
         if (!$municipalityId) {
             return response(["message" => "Authentication failed"]);
         }
-        $vendors = Seller::whereHas('user', function ($query) use ($municipalityId) {
+        $vendors = Seller::with('user')->whereHas('user', function ($query) use ($municipalityId) {
             $query->where('municipality_id', $municipalityId);
         })->get();
         return response($vendors, 200);
