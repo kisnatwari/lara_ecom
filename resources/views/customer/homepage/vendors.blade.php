@@ -69,6 +69,8 @@
                     slidesToShow: 7,
                     arrows: true,
                     adaptiveHeight: true,
+                    autoplay: true,
+                    autoplaySpeed: 1000,
                     responsive: [{
                             breakpoint: 1920,
                             settings: {
