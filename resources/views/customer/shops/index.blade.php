@@ -48,8 +48,8 @@
                     @endisset
                     @foreach ($categories as $category)
                         <a href="{{ route('shop.category', ['shop' => $shop->id, 'category' => $category->id]) }}"
-                            class="dark:bg-slate-300 dark:text-slate-800 bg-slate-700 text-slate-50 px-2 py-1 rounded-lg
-                             {{ $currentCategoryId == $category->id ? 'border-2 border-indigo-500 dark:bg-indigo-200 bg-indigo-800 text-white' : '' }}">
+                            class="px-2 py-1 rounded-lg
+                             {{ $currentCategoryId == $category->id ? 'border-2 border-indigo-500 dark:bg-indigo-800 bg-indigo-800 text-white dark:text-white' : 'dark:bg-slate-300 dark:text-slate-800 bg-slate-700 text-slate-50' }}">
                             {{ $category->name }}
                         </a>
                     @endforeach

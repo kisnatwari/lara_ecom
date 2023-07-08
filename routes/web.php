@@ -32,6 +32,8 @@ Route::post('/update-customer-address', [ProfileController::class, 'updateAddres
 Route::get('/shop/{shop}', [PagesController::class, 'shop'])->name('shop');
 Route::get('/shop/{shop}/category/{category}', [PagesController::class, 'categoryByShop'])->name('shop.category');
 
+Route::get("/shopcategory/{shopcategory}", [PagesController::class, 'shopcategory'])->name('shopcategory');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

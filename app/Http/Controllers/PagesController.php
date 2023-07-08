@@ -19,38 +19,6 @@ class PagesController extends Controller
             $randomProducts = Product::inRandomOrder()->limit(50)->get();
             return view('welcome', compact('shopcategories', 'randomProducts'));
         }
-
-        /* $vendors = Seller::whereHas('user', function ($query) use ($municipalityId) {
-            $query->where('municipality_id', $municipalityId);
-        })->get();
-
-        $productsFromMunicipality = Product::whereIn('seller_id', $vendors->pluck('id')->toArray())
-            ->orderBy('seller_id', 'asc')
-            ->limit(30)
-            ->get();
-
-        $otherVendors = Seller::whereHas('user', function ($query) use ($municipalityId) {
-            $query->where('municipality_id', '!=', $municipalityId);
-        })->get();
-
-        $productsFromOtherMunicipalities = Product::whereIn('seller_id', $otherVendors->pluck('id')->toArray())
-            ->inRandomOrder()
-            ->limit(30)
-            ->get();
-
-        $userDistrictId = auth()->user()->municipality->district_id;
-
-        $productsFromDistrict = Product::whereHas('seller.user.municipality', function ($query) use ($userDistrictId) {
-            $query->where('district_id', $userDistrictId);
-        })->inRandomOrder()->limit(30)->get();
-
-        $excludedProductIds = $productsFromMunicipality->pluck('id')->concat($productsFromDistrict->pluck('id'));
-
-        $randomProducts = Product::whereNotIn('id', $excludedProductIds)
-            ->inRandomOrder()
-            ->limit(30)
-            ->get(); */
-
         return view('welcome', compact('shopcategories'));
     }
 
@@ -76,8 +44,28 @@ class PagesController extends Controller
 
     public function categoryByShop(Seller $shop, Category $category)
     {
-        $products = $shop->products()->where('category_id', $category -> id)->paginate(15);
+        $products = $shop->products()->where('category_id', $category->id)->paginate(15);
         return view('customer.shops.index', compact('shop', 'products'));
     }
 
+    public function shopCategory(ShopCategory $shopcategory)
+    {
+        $municipality_id = auth()->user()->municipality_id;
+        $products = $shopcategory->products()
+            ->whereHas('seller', function ($query) use ($municipality_id) {
+                $query->whereHas('user', function ($query) use ($municipality_id) {
+                    $query->where('municipality_id', $municipality_id);
+                });
+            })
+            ->with('seller.user')
+            ->get()
+            ->groupBy('seller.user.municipality_id');
+
+        $seller_municipalities = $products->keys();
+        //dd(count($products));
+        return response([
+            "userMunicipality" => $municipality_id,
+            "sellerMunicipalities" => $seller_municipalities
+        ], 200);
+    }
 }

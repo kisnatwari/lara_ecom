@@ -13,10 +13,10 @@
     <div class="category-carousel">
       @foreach ($shopcategories as $shopcategory )
         <div>
-          <div class="w-24">
+          <a href="{{route('shopcategory', $shopcategory -> id)}}" class="w-24 block">
             <img src="{{Storage::url("/categories/". $shopcategory->name . ".jpg")}}" alt="" class="w-full h-24 object-cover">
             <p class="font-bold px-2 py-1 text-center text-xs">{{ $shopcategory->name }}</p>
-          </div>
+          </a>
         </div>
       @endforeach
     </div>

@@ -13,7 +13,8 @@ class ShopCategory extends Model
         return $this->hasMany(Seller::class);
     }
 
+
     public function products(){
-        return $this->hasManyThrough(Product::class, Sellers::class);
+        return $this->hasManyThrough(Product::class, Seller::class);
     }
 }
