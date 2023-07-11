@@ -9,7 +9,7 @@
 </style>
 <div class="w-full bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 py-2">
   <div class="container mx-auto">
-    <h1 class="text-center text-lg mb-3">Categories</h1>
+    <h1 class="text-center text-lg mb-3">Explore Different Shop Categories</h1>
     <div class="category-carousel">
       @foreach ($shopcategories as $shopcategory )
         <div>

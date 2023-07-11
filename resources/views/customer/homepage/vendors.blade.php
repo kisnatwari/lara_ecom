@@ -1,7 +1,7 @@
 @if (auth()->user() && auth()->user()->municipality)
     <div class="w-full bg-slate-50 dark:bg-slate-800 py-2 text-slate-800 dark:text-slate-200">
         <div class="container vendors-container mx-auto">
-            <h1 class="text-center text-lg mb-3">Nearby Vendors</h1>
+            <h1 class="text-center text-lg mb-3">Visit Nearby Vendors</h1>
             <div class="vendors-carousel-container">
                 <div class="vendors-carousel">
                     @for ($i = 0; $i < 10; $i++)
@@ -44,7 +44,7 @@
                 vendors.forEach(function(vendor) {
                     $(carousel).append(
                         `<a href="/shop/${vendor.id}" class="block relative">
-                            <div class="w-48 max-[1024px]:w-44 min-[1367px]:w-52 h-40 relative">
+                            <div class="w-48 max-[1024px]:w-44 min-[1367px]:w-52 h-40 relative rounded-lg overflow-hidden">
                                 <img src="${vendor.user.profile_photo.replace('public', 'storage')}" alt="" class="w-full h-full object-cover">
                                 <div class="absolute z-10 w-full h-full top-0 left-0 bg-gradient-to-b to-slate-950 via-slate-950/50 from-transparent overflow-hidden">
                                     <div class="absolute bottom-0 text-white py-1">
