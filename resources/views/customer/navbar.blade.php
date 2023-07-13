@@ -18,6 +18,9 @@
         </a>
         <div class="flex items-center gap-3">
             @if (auth()->user())
+                <a href="/myorders">
+                    <button class="border px-5 py-1 rounded-3xl dark:border-gray-500 border-gray-300">My Orders</button>
+                </a>
                 <a href="/cart" class="rounded-3xl w-7 h-7 flex justify-center items-center relative">
                     <i class="fa fa-shopping-cart dark:text-slate-200 text-slate-800 text-lg"></i>
                     <span

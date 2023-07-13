@@ -45,6 +45,12 @@ class OrderController extends Controller
         return view('seller.orders.completed', compact('groupedOrders'));
     }
 
+    public function myOrders(){
+        $userId = auth() -> id();
+        $orders = Order::where('user_id', $userId)->get();
+        return view('customer.myorders', compact('orders'));
+    }
+
 
     public function store(Request $request)
     {

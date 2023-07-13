@@ -99,7 +99,7 @@
                                                 Rs {{ number_format($product->price * $order->quantity, 2, '.', ',') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                COD
+                                                {{$order -> payment_mode}}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap flex justify-start gap-2 flex-wrap">
                                                 @if ($order->status_id == 1)

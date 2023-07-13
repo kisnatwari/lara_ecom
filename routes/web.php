@@ -26,6 +26,7 @@ Route::get('/', [PagesController::class, 'homepage']);
 Route::get('/products', [PagesController::class, 'productspage']);
 Route::get('/products/{product}', [PagesController::class, 'productview']) -> name('products.view');
 Route::resource('cart', CartController::class);
+Route::get("/myorders", [OrderController::class, 'myorders']) -> name('orders.myorders');
 Route::post('/cart/order', [OrderController::class, 'store'])->name('order.store');
 Route::post('/update-customer-address', [ProfileController::class, 'updateAddress'])->name('cart.updateCustomerAddress');
 Route::view('/order-success', 'customer.order-success');
