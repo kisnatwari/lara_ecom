@@ -29,6 +29,22 @@ class OrderController extends Controller
         return view('seller.orders.index', compact('groupedOrders'));
     }
 
+    public function completedOrders()
+    {
+        $sellerId = auth()->user()->seller->id;
+        $orders = Order::whereHas('product.seller', function ($query) use ($sellerId) {
+            $query->where('seller_id', $sellerId);
+        })
+            ->with(['product', 'user.municipality.district'])
+            ->orderBy('created_at', 'desc')
+            ->where('status_id', '=', '3')
+            ->get();
+
+        $groupedOrders = $orders->groupBy('user_id');
+
+        return view('seller.orders.completed', compact('groupedOrders'));
+    }
+
 
     public function store(Request $request)
     {
