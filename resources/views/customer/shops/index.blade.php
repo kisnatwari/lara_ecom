@@ -12,13 +12,17 @@
                     <h1 class="text-xl font-bold text-slate-800 dark:text-slate-200">
                         <i class="fa fa-shop mr-1"></i> {{ $shop->shop_name }}
                     </h1>
-                    <p>
+                    <p class="text-md">
+                        <i class="fa fa-store mr-1"></i>
+                        {{$shop -> shopCategory -> name}}
+                    </p>
+                    <p class="text-sm">
                         <i class="fa fa-map-marker-alt mr-1"></i>
                         {{ $shop->user->municipality->district->district_name }},
                         {{ $shop->user->municipality->municipality_name }},
                         <small>({{ $shop->user->ward }})</small>
                     </p>
-                    <p>
+                    <p class="text-sm">
                         <i class="fa fa-phone mr-1"></i>
                         {{ $shop->user->phone }}
                     </p>

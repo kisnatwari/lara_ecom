@@ -50,22 +50,18 @@ class PagesController extends Controller
 
     public function shopCategory(ShopCategory $shopcategory)
     {
+        if(!auth() -> user()){
+            return redirect() -> route('login');
+        }
         $municipality_id = auth()->user()->municipality_id;
-        $products = $shopcategory->products()
-            ->whereHas('seller', function ($query) use ($municipality_id) {
-                $query->whereHas('user', function ($query) use ($municipality_id) {
-                    $query->where('municipality_id', $municipality_id);
-                });
+        $sellers = //show the sellers whose shopcategory_id = $shopcategory->id and user_id points to the user with municipality_id = $municipality_id
+            Seller::whereHas('user', function ($query) use ($municipality_id) {
+                $query->where('municipality_id', $municipality_id);
             })
-            ->with('seller.user')
-            ->get()
-            ->groupBy('seller.user.municipality_id');
-
-        $seller_municipalities = $products->keys();
-        //dd(count($products));
-        return response([
-            "userMunicipality" => $municipality_id,
-            "sellerMunicipalities" => $seller_municipalities
-        ], 200);
+            ->where('shop_category_id', $shopcategory->id)
+            ->with('user')
+            ->with('shopcategory')
+            ->get();
+            return view('customer.shopcategories.index', compact('shopcategory', 'sellers'));
     }
 }
