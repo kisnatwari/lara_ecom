@@ -49,8 +49,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/seller/dashboard', [PagesController::class, 'sellerDashboard'])->name('seller-dashboard');
     Route::get('/seller/products', [SellerProductController::class, 'index'])->name('seller-products');
     Route::get('/seller/products/create', [SellerProductController::class, 'create'])->name('products.create');
+    Route::post('/seller/products', [SellerProductController::class, 'store'])->name('products.store');
     Route::get("/seller/products/{product}", [SellerProductController::class, 'show'])->name('products.view');
     Route::get("/seller/products/{product}/edit", [SellerProductController::class, 'edit'])->name('products.edit');
+    Route::put("/seller/products/{product}", [SellerProductController::class, 'update'])->name('products.update');
     Route::delete("/seller/products/{product}", [SellerProductController::class, 'destroy'])->name('products.destroy');
 
     Route::get("/seller/categories", [CategoryController::class, 'index'])->name('categories.index');
@@ -64,6 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get("/seller/orders/completed", [OrderController::class, 'completedOrders'])->name('orders.completed');
     Route::post("/seller/orders/cancel/{order}", [OrderController::class, 'order_cancel'])->name('orders.cancel');
     Route::post("/seller/orders/deliver/{order}", [OrderController::class, 'order_delivery'])->name('orders.deliver');
+    Route::post("/seller/orders/delivered/{order}", [OrderController::class, 'order_delivered'])->name('orders.delivered');
 });
 
 Route::middleware('auth')->group(function () {
