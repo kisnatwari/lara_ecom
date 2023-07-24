@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
 
     public function up(): void
     {
@@ -15,31 +14,27 @@ return new class extends Migration
             $table->string("name");
             $table->timestamps();
         });
-        DB::unprepared("INSERT INTO `shop_categories` (`name`) VALUES
-        ('Animals & Pet Supplies'),
-        ('Apparel & Accessories'),
-        ('Arts & Entertainment'),
-        ('Baby & Toddler'),
-        ('Business & Industrial'),
-        ('Cameras & Optics'),
-        ('Electronics'),
-        ('Food, Beverages & Tobacco'),
-        ('Furniture'),
-        ('Hardware'),
-        ('Health & Beauty'),
-        ('Home & Garden'),
-        ('Luggage & Bags'),
-        ('Mature'),
-        ('Media'),
-        ('Office Supplies'),
-        ('Religious & Ceremonial'),
-        ('Software'),
-        ('Sporting Goods'),
-        ('Toys & Games'),
-        ('Vehicles & Parts'),
-        ('Others');");
+        DB::unprepared(
+            "INSERT INTO `shop_categories` (`name`) VALUES
+            ('Grocery Shop'),
+            ('Clothing Store'),
+            ('Electronic Store'),
+            ('Book Store'),
+            ('Computer and IT Store'),
+            ('Mobile Store'),
+            ('Furniture Store'),
+            ('Jewelry Store'),
+            ('Bakery'),
+            ('Beauty and Personal Care'),
+            ('Pet Products Store'),
+            ('Home Appliances'),
+            ('Hardware Store'),
+            ('Sporting Goods Store'),
+            ('Home Decor'),
+            ('Others');"
+        );
     }
-    
+
     public function down(): void
     {
         Schema::dropIfExists('shop_categories');
