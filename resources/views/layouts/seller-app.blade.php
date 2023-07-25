@@ -23,14 +23,13 @@
     localStorage.setItem('darkMode', JSON.stringify(true));
 }
 darkMode = JSON.parse(localStorage.getItem('darkMode'));
-$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" x-cloak
-    style="background-image: url(https://assets-global.website-files.com/6009ec8cda7f305645c9d91b/620bd6d655f2044afa28bff4_glassmorphism-p-1600.jpeg)">
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" x-cloak>
     <div x-bind:class="{ 'dark': darkMode === true }"
-        class="h-screen flex flex-col bg-slate-800/80 backdrop-blur-lg dark:text-white">
+        class="h-screen flex flex-col dark:text-white">
         @include('layouts.navigation')
 
         <!-- Page Content -->
-        <main class="flex-grow overflow-auto">
+        <main class="flex-grow overflow-auto bg-white dark:bg-slate-800">
             @yield('seller-layout')
         </main>
     </div>
