@@ -20,18 +20,9 @@ return new class extends Migration
 
         // Insert rows for order statuses
         DB::table('statuses')->insert([
-            ['name' => 'Order Placed'],
-            ['name' => 'Order Confirmed'],
-            ['name' => 'Order Shipped'],
-            ['name' => 'Out for Delivery'],
-            ['name' => 'Delivered'],
-            /* ['name' => 'Order Cancelled'],
-            ['name' => 'Payment Pending'],
-            ['name' => 'Payment Received'],
-            ['name' => 'Refund Requested'],
-            ['name' => 'Refunded'],
-            ['name' => 'Order Returned'],
-            ['name' => 'Order Completed'], */
+            ['name' => 'Pending'],
+            ['name' => 'Confirmed'],
+            ['name' => 'Delivered']
         ]);
     }
 

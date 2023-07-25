@@ -157,6 +157,7 @@ class CartController extends Controller
                     'user_id' => $userId,
                     'product_id' => $cartItem->product_id,
                     'quantity' => $cartItem->quantity,
+                    'status_id' => '1'
                 ]);
 
                 // Remove the ordered item from the cart
@@ -180,6 +181,7 @@ class CartController extends Controller
                 'user_id' => $userId,
                 'product_id' => $cartItem->product_id,
                 'quantity' => $cartItem->quantity,
+                'status_id' => 1
             ]);
 
             // Remove the ordered item from the cart

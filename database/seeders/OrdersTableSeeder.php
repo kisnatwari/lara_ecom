@@ -1,6 +1,8 @@
 <?php
 namespace Database\Seeders;
 
+use App\Models\Product;
+use App\Models\Seller;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
@@ -16,11 +18,11 @@ class OrdersTableSeeder extends Seeder
         $orders = [];
 
         $orderItems = [];
+        $user_id = rand(14001, 14010);
+        $products = Product::where('seller_id', 2192)->pluck('id')->toArray();
 
-        for ($i = 0; $i < 10000; $i++) {
-            $user_id = rand(5501, 10000);
-            $product_id = rand(1, 200000);
-
+        for ($i = 0; $i < 100; $i++) {
+            $product_id = $products[array_rand($products)];
             // Check if the user already has the product in the order
             if (isset($orderItems[$user_id]) && in_array($product_id, $orderItems[$user_id])) {
                 continue; // Skip this iteration if the user already has the product in the order
