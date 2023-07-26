@@ -3,9 +3,14 @@
 @section('children')
     <div class="pt-2">
         @foreach ($cartItems as $shop => $items)
+            @php
+                $totalAmount = 0;
+            @endphp
             <div class="bg-white/100 dark:bg-slate-800/75 py-5 mb-2">
                 <div class="container mx-auto">
-                    <h2 class="text-2xl font-bold mb-4">{{ $shop }}</h2>
+                    <h2 class="text-2xl font-bold mb-4">
+                        <a href="/shop/{{ $items[0]['seller_id'] }}">{{ $shop }}</a>
+                    </h2>
                     <table class="w-full border-collapse">
                         <thead>
                             <tr>
@@ -27,6 +32,8 @@
                                     } else {
                                         $imageUrl = $image;
                                     }
+                                    
+                                    $totalAmount += $item['total_price'];
                                 @endphp
                                 <tr>
                                     <td class="border px-4 py-2">
@@ -64,24 +71,33 @@
                         </tbody>
                     </table>
                     <div class="text-end">
-                        <form method="POST" action="{{ route('cart.order')}}">
+                        <div class="text-end mt-3 text-lg">
+                            Total Amount: <span class="font-bold">Rs {{ number_format($totalAmount, 2, '.', ',') }}</span>
+                        </div>
+                        {{-- <form method="POST" action="{{ route('cart.order') }}">
                             @csrf
-                            <input type="hidden" name="shop_id" value="{{$items[0]['id']}}">
-                            <button type="submit" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mt-4">
+                            <input type="hidden" name="shop_id" value="{{ $items[0]['id'] }}">
+                            <button type="submit"
+                                class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mt-4">
                                 Order
                             </button>
-                        </form>
+                        </form> --}}
+                        <button
+                            class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mt-4"
+                            onclick="khaltiPayment('{{ $items[0]['seller_id'] }}', '{{ $totalAmount * 100 }}')">
+                            Proceed to checkout
+                        </button>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
-    <form method="POST" action="{{ route('cart.orderAll') }}">
+    {{--     <form method="POST" action="{{ route('cart.orderAll') }}">
         @csrf
         <button class="bg-purple-500 hover:bg-purple-600 text-white mx-auto font-bold py-2 px-16 mb-5 rounded mt-4">
             Order From All Shops
         </button>
-    </form>
+    </form> --}}
     <!-- Modal -->
     <div id="editModal" class="fixed animate__animated z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title"
         role="dialog" aria-modal="true">
@@ -139,6 +155,7 @@
         </div>
     </div>
 
+    <script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -165,5 +182,42 @@
                 }, 500);
             });
         });
+    </script>
+
+
+    <script>
+        function khaltiPayment(seller, amount) {
+            var config = {
+                // replace the publicKey with yours
+                "publicKey": "test_public_key_c9718b52b20145c1851d1ef3d4a42d54",
+                "productIdentity": "1234567890",
+                "productName": "Dragon",
+                "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
+                "paymentPreference": [
+                    "KHALTI",
+                    "EBANKING",
+                    "MOBILE_BANKING",
+                    "CONNECT_IPS",
+                    "SCT",
+                ],
+                "eventHandler": {
+                    onSuccess(payload) {
+                        // hit merchant api for initiating verfication
+                        console.log(payload);
+
+                    },
+                    onError(error) {
+                        console.log(error);
+                    },
+                    onClose() {
+                        console.log('widget is closing');
+                    }
+                }
+            };
+            var checkout = new KhaltiCheckout(config);
+            checkout.show({
+                amount: amount >= 20000 ? 19999 : amount,
+            });
+        }
     </script>
 @endsection

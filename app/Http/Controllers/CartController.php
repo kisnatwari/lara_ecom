@@ -22,7 +22,7 @@ class CartController extends Controller
             ->join('sellers', 'products.seller_id', '=', 'sellers.id')
             ->select(
                 'sellers.shop_name',
-                'sellers.id',
+                'sellers.id as seller_id',
                 'products.product_name',
                 'carts.quantity as units',
                 'products.price as unit_price',
