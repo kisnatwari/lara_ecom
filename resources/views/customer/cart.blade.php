@@ -71,20 +71,21 @@
                         </tbody>
                     </table>
                     <div class="text-end">
-                        <form method="post" action="{{route('cart.order')}}" onsubmit="checkout(event)" class="bg-slate-100 dark:bg-slate-900/30 border-2 border-dashed dark:border-slate-900/50 p-4 mt-4 w-fit ml-auto">
+                        <form method="post" action="{{route('order.store')}}" onsubmit="checkout(event)" class="bg-slate-100 dark:bg-slate-900/30 border-2 border-dashed dark:border-slate-900/50 p-4 mt-4 w-fit ml-auto">
                             <input type="hidden" name="shop_id" value="{{ $items[0]['seller_id'] }}">
-                            <input type="hidden" name="total-amount" value="{{ $totalAmount * 100 }}">
+                            <input type="hidden" name="total_amount" value="{{ $totalAmount * 100 }}">
+                            @csrf
                             <fieldset class="w-fit">
                                 @php
                                     $random_id = rand();
                                 @endphp
                                 <legend class="font-bold">Payment Mode</legend>
                                 <p class="text-start mb-1">
-                                    <input type="radio" name="payment_mode" value="cod" id="cod{{ $random_id }}">
+                                    <input required type="radio" name="payment_mode" value="cod" id="cod{{ $random_id }}">
                                     <label for="cod{{ $random_id }}">&nbsp; Cash On Delivery</label>
                                 </p>
                                 <p class="text-start">
-                                    <input type="radio" name="payment_mode" value="khalti" id="khalti{{ $random_id }}">
+                                    <input required type="radio" name="payment_mode" value="khalti" id="khalti{{ $random_id }}">
                                     <label for="khalti{{ $random_id }}">&nbsp; Pay with Khalti</label>
                                 </p>
                             </fieldset>
@@ -103,13 +104,7 @@
             </div>
         @endforeach
     </div>
-    {{--     <form method="POST" action="{{ route('cart.orderAll') }}">
-        @csrf
-        <button class="bg-purple-500 hover:bg-purple-600 text-white mx-auto font-bold py-2 px-16 mb-5 rounded mt-4">
-            Order From All Shops
-        </button>
-    </form> --}}
-    <!-- Modal -->
+
     <div id="editModal" class="fixed animate__animated z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title"
         role="dialog" aria-modal="true">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -200,9 +195,9 @@
         function checkout(event) {
             event.preventDefault();
             var form = event.target;
-            var paymentmode = form.elements['payment_mode'];
+            var paymentmode = form.elements['payment_mode'].value;
             if(paymentmode === 'cod'){
-                form.action = "/"
+                form.submit();
                 return;
             }
             var config = {
@@ -222,7 +217,7 @@
                     onSuccess(payload) {
                         // hit merchant api for initiating verfication
                         console.log(payload);
-                        payload['seller'] = seller;
+                        payload['seller'] = form.elements['shop_id'].value;
                         if (payload.idx) {
                             $.ajaxSetup({
                                 headers: {
@@ -236,12 +231,7 @@
                                 data: payload,
                                 success: function(response) {
                                     console.log(response);
-                                    /* if (response.success == 1) {
-                                        window.location = response.redirecto;
-
-                                    } else {
-                                        checkout.hide();
-                                    } */
+                                    form.submit();
                                 }
                             })
                         }
@@ -255,6 +245,7 @@
                 }
             };
             var checkout = new KhaltiCheckout(config);
+            var amount = form.elements['total_amount'].value;
             checkout.show({
                 amount: amount >= 20000 ? 19999 : amount,
             });

@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('status_id')->default(1);
             $table->integer('quantity');
+            $table->string('payment_mode')->default('cod');
             $table->timestamps();
     
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

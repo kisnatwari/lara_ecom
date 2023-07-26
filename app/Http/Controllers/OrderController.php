@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -47,7 +48,35 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $userId = auth()->user()->id;
+        $shopId = $request->shop_id;
+        $payment_mode = $request -> payment_mode;
+  
+        if ($shopId) {
+            $cartItems = Cart::where('user_id', $userId)
+                ->whereHas('product', function ($query) use ($shopId) {
+                    $query->where('seller_id', $shopId);
+                })->get();
+  
+            // Loop through the cart items and create an order for each item
+            foreach ($cartItems as $cartItem) {
+                Order::create([
+                    'user_id' => $userId,
+                    'product_id' => $cartItem->product_id,
+                    'quantity' => $cartItem->quantity,
+                    'status_id' => '1',
+                    'payment_mode' => $payment_mode
+                ]);
+  
+                // Remove the ordered item from the cart
+                $cartItem->delete();
+            }
+  
+            //return redirect()->back()->with('success', 'Products ordered successfully.');
+            return response(["success" => "Products ordered successfully"], 200);
+        }
+  
+        return response(["error" => "invalid seller data"], 400);
     }
 
     /**

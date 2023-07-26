@@ -30,7 +30,7 @@ class paymentController extends Controller
     if (count($cartItems))
       foreach ($cartItems as $cartItem)
         $total_price += $cartItem['total_price'];
-        
+
     return $total_price * 100;
   }
 
@@ -77,33 +77,36 @@ class paymentController extends Controller
 
   public function order(Request $request)
   {
-      $userId = auth()->user()->id;
-      $shopId = $request->shop_id;
-      $payment_mode = $request -> payment_mode;
+    $request -> validate([
+      'payment_mode'=> 'required'
+    ]);
+    $userId = auth()->user()->id;
+    $shopId = $request->shop_id;
+    $payment_mode = $request->payment_mode;
 
-      if ($shopId) {
-          $cartItems = Cart::where('user_id', $userId)
-              ->whereHas('product', function ($query) use ($shopId) {
-                  $query->where('seller_id', $shopId);
-              })->get();
+    if ($shopId) {
+      $cartItems = Cart::where('user_id', $userId)
+        ->whereHas('product', function ($query) use ($shopId) {
+          $query->where('seller_id', $shopId);
+        })->get();
 
-          // Loop through the cart items and create an order for each item
-          foreach ($cartItems as $cartItem) {
-              Order::create([
-                  'user_id' => $userId,
-                  'product_id' => $cartItem->product_id,
-                  'quantity' => $cartItem->quantity,
-                  'status_id' => '1'
-              ]);
+      // Loop through the cart items and create an order for each item
+      foreach ($cartItems as $cartItem) {
+        Order::create([
+          'user_id' => $userId,
+          'product_id' => $cartItem->product_id,
+          'quantity' => $cartItem->quantity,
+          'status_id' => '1',
+          'payment_mode' => $payment_mode
+        ]);
 
-              // Remove the ordered item from the cart
-              $cartItem->delete();
-          }
-
-          return redirect()->back()->with('success', 'Products ordered successfully.');
+        // Remove the ordered item from the cart
+        $cartItem->delete();
       }
 
-      return response(["error" => "invalid seller data"], 400);
-  }
+      return redirect()->back()->with('success', 'Products ordered successfully.');
+    }
 
+    return response(["error" => "invalid seller data"], 400);
+  }
 }
