@@ -140,36 +140,6 @@ class CartController extends Controller
     }
 
 
-    public function order(Request $request)
-    {
-        $userId = auth()->user()->id;
-        $shopId = $request->shop_id;
-
-        if ($shopId) {
-            $cartItems = Cart::where('user_id', $userId)
-                ->whereHas('product', function ($query) use ($shopId) {
-                    $query->where('seller_id', $shopId);
-                })->get();
-
-            // Loop through the cart items and create an order for each item
-            foreach ($cartItems as $cartItem) {
-                Order::create([
-                    'user_id' => $userId,
-                    'product_id' => $cartItem->product_id,
-                    'quantity' => $cartItem->quantity,
-                    'status_id' => '1'
-                ]);
-
-                // Remove the ordered item from the cart
-                $cartItem->delete();
-            }
-
-            return redirect()->back()->with('success', 'Products ordered successfully.');
-        }
-
-        return response(["error" => "invalid seller data"], 400);
-    }
-
     public function orderAll(Request $request)
     {
         $userId = auth()->user()->id;

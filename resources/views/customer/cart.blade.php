@@ -11,7 +11,7 @@
                     <h2 class="text-2xl font-bold mb-4">
                         <a href="/shop/{{ $items[0]['seller_id'] }}">{{ $shop }}</a>
                     </h2>
-                    <table class="w-full border-collapse">
+                    <table class="w-full border-collapse divide-y shadow-lg divide-slate-800 dark:divide-slate-200">
                         <thead>
                             <tr>
                                 <th class="px-4 py-2 text-left">Product Image</th>
@@ -22,7 +22,7 @@
                                 <th class="px-4 py-2 text-left">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="divide-y">
                             @foreach ($items as $item)
                                 @php
                                     $image = json_decode($item['images'], true)[0];
@@ -36,20 +36,20 @@
                                     $totalAmount += $item['total_price'];
                                 @endphp
                                 <tr>
-                                    <td class="border px-4 py-2">
-                                        <img src="{{ $imageUrl }}" alt="" class="w-20 h-20 object-contain">
+                                    <td class="px-4 py-2">
+                                        <img src="{{ $imageUrl }}" alt="" class="w-16 h-16 rounded-full object-contain border-2 border-slate-500">
                                     </td>
-                                    <td class="border px-4 py-2">
+                                    <td class="px-4 py-2">
                                         <b><a href="/products/{{ $item['product_id'] }}">{{ $item['product_name'] }}</a></b>
                                     </td>
-                                    <td class="border px-4 py-2">
+                                    <td class="px-4 py-2">
                                         <div class="flex items-center">
                                             <span id="quantity-{{ $item['product_id'] }}">{{ $item['units'] }}</span>
                                         </div>
                                     </td>
-                                    <td class="border px-4 py-2">{{ $item['unit_price'] }}</td>
-                                    <td class="border px-4 py-2">{{ $item['total_price'] }}</td>
-                                    <td class="border px-4 py-2">
+                                    <td class="px-4 py-2">{{ $item['unit_price'] }}</td>
+                                    <td class="px-4 py-2">{{ $item['total_price'] }}</td>
+                                    <td class="px-4 py-2">
                                         <div class="flex">
                                             <form method="POST" action="/cart/{{ $item['product_id'] }}">
                                                 @csrf
@@ -71,22 +71,33 @@
                         </tbody>
                     </table>
                     <div class="text-end">
-                        <div class="text-end mt-3 text-lg">
-                            Total Amount: <span class="font-bold">Rs {{ number_format($totalAmount, 2, '.', ',') }}</span>
-                        </div>
-                        {{-- <form method="POST" action="{{ route('cart.order') }}">
-                            @csrf
-                            <input type="hidden" name="shop_id" value="{{ $items[0]['id'] }}">
+                        <form method="post" action="{{route('cart.order')}}" onsubmit="checkout(event)" class="bg-slate-100 dark:bg-slate-900/30 border-2 border-dashed dark:border-slate-900/50 p-4 mt-4 w-fit ml-auto">
+                            <input type="hidden" name="shop_id" value="{{ $items[0]['seller_id'] }}">
+                            <input type="hidden" name="total-amount" value="{{ $totalAmount * 100 }}">
+                            <fieldset class="w-fit">
+                                @php
+                                    $random_id = rand();
+                                @endphp
+                                <legend class="font-bold">Payment Mode</legend>
+                                <p class="text-start mb-1">
+                                    <input type="radio" name="payment_mode" value="cod" id="cod{{ $random_id }}">
+                                    <label for="cod{{ $random_id }}">&nbsp; Cash On Delivery</label>
+                                </p>
+                                <p class="text-start">
+                                    <input type="radio" name="payment_mode" value="khalti" id="khalti{{ $random_id }}">
+                                    <label for="khalti{{ $random_id }}">&nbsp; Pay with Khalti</label>
+                                </p>
+                            </fieldset>
+                            <p class="mt-2">
+                                <span class="font-bold">
+                                    Total Amount: Rs {{ number_format($totalAmount, 2, '.', ',') }}
+                                </span>
+                            </p>
                             <button type="submit"
                                 class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mt-4">
-                                Order
+                                Proceed to checkout
                             </button>
-                        </form> --}}
-                        <button
-                            class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mt-4"
-                            onclick="khaltiPayment('{{ $items[0]['seller_id'] }}', '{{ $totalAmount * 100 }}')">
-                            Proceed to checkout
-                        </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -186,7 +197,14 @@
 
 
     <script>
-        function khaltiPayment(seller, amount) {
+        function checkout(event) {
+            event.preventDefault();
+            var form = event.target;
+            var paymentmode = form.elements['payment_mode'];
+            if(paymentmode === 'cod'){
+                form.action = "/"
+                return;
+            }
             var config = {
                 // replace the publicKey with yours
                 "publicKey": "test_public_key_c9718b52b20145c1851d1ef3d4a42d54",
@@ -204,7 +222,29 @@
                     onSuccess(payload) {
                         // hit merchant api for initiating verfication
                         console.log(payload);
+                        payload['seller'] = seller;
+                        if (payload.idx) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                }
+                            });
 
+                            $.ajax({
+                                method: 'post',
+                                url: "{{ route('ajax.khalti.verify_order') }}",
+                                data: payload,
+                                success: function(response) {
+                                    console.log(response);
+                                    /* if (response.success == 1) {
+                                        window.location = response.redirecto;
+
+                                    } else {
+                                        checkout.hide();
+                                    } */
+                                }
+                            })
+                        }
                     },
                     onError(error) {
                         console.log(error);

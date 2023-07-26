@@ -4,6 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\paymentController;
 use App\Http\Controllers\SellerProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\skeletonApi\homepageApi;
@@ -76,5 +77,7 @@ Route::get("/homepageApi/vendors", [homepageApi::class, 'vendors']);
 Route::get("/homepageApi/productsFromMunicipality", [homepageApi::class, 'productsFromMunicipality']);
 Route::get("/homepageApi/productsFromDistrict", [homepageApi::class, 'productsFromDistrict']);
 Route::get("/homepageApi/randomProducts", [homepageApi::class, 'randomProducts']);
+
+Route::post('khalti/verify', [paymentController::class, 'verify'])->name('ajax.khalti.verify_order');
 
 require __DIR__ . '/auth.php';
