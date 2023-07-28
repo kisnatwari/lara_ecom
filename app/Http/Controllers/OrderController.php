@@ -2,21 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\orderSuccessMail;
 use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-/*     public function index()
-    {
-        $seller = auth() -> user()->seller;
-        $orders = $seller -> orders;
-        return view('seller.orders.index', compact('orders'));
-    } */
 
     public function index()
     {
@@ -48,34 +41,42 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'shop_id' => 'required|numeric',
+            'total_amount' => 'required|numeric',
+            '_token' => 'required|string',
+            'payment_mode' => 'required|string',
+        ]);
         $userId = auth()->user()->id;
         $shopId = $request->shop_id;
-        $payment_mode = $request -> payment_mode;
-  
+        $payment_mode = $request->payment_mode;
+
         if ($shopId) {
             $cartItems = Cart::where('user_id', $userId)
                 ->whereHas('product', function ($query) use ($shopId) {
                     $query->where('seller_id', $shopId);
                 })->get();
-  
+
             // Loop through the cart items and create an order for each item
             foreach ($cartItems as $cartItem) {
-                Order::create([
-                    'user_id' => $userId,
-                    'product_id' => $cartItem->product_id,
-                    'quantity' => $cartItem->quantity,
-                    'status_id' => '1',
-                    'payment_mode' => $payment_mode
-                ]);
-  
+
+                $order = new Order();
+                $order->user_id = $userId;
+                $order->product_id = $cartItem->product_id;
+                $order->quantity = $cartItem->quantity;
+                $order->status_id = 1;
+                $order->payment_mode = $payment_mode;
+                $order->save();
+
                 // Remove the ordered item from the cart
                 $cartItem->delete();
             }
-  
-            //return redirect()->back()->with('success', 'Products ordered successfully.');
-            return response(["success" => "Products ordered successfully"], 200);
+
+            Mail::to(auth()->user()->email)->send(new orderSuccessMail(null));
+
+            return redirect('/order-success');
         }
-  
+
         return response(["error" => "invalid seller data"], 400);
     }
 
