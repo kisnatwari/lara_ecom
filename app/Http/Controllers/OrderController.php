@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\orderSuccessMail;
+use App\Mail\MyMailer;
 use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -19,6 +19,7 @@ class OrderController extends Controller
         })
             ->with(['product', 'user.municipality.district'])
             ->orderBy('created_at', 'desc')
+            ->where('status_id', '<', '3')
             ->get();
 
         $groupedOrders = $orders->groupBy('user_id');
@@ -28,17 +29,7 @@ class OrderController extends Controller
         return view('seller.orders.index', compact('groupedOrders'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -57,6 +48,17 @@ class OrderController extends Controller
                     $query->where('seller_id', $shopId);
                 })->get();
 
+
+            // Check the availability of each item in the cart
+            foreach ($cartItems as $cartItem) {
+                $product = $cartItem->product;
+                $orderedQuantity = $cartItem->quantity;
+
+                if ($product->quantity < $orderedQuantity) {
+                    return response(["error" => "Ordered quantity is not available in stock"], 400);
+                }
+            }
+
             // Loop through the cart items and create an order for each item
             foreach ($cartItems as $cartItem) {
 
@@ -72,7 +74,12 @@ class OrderController extends Controller
                 $cartItem->delete();
             }
 
-            Mail::to(auth()->user()->email)->send(new orderSuccessMail(null));
+            $mailData = [
+                "subject" => "Product Ordered Successfully",
+                "view" => "mail.order-success"
+            ];
+
+            Mail::to(auth()->user()->email)->send(new MyMailer($mailData));
 
             return redirect('/order-success');
         }
@@ -80,35 +87,90 @@ class OrderController extends Controller
         return response(["error" => "invalid seller data"], 400);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
+    public function order_cancel(Order $order)
     {
-        //
+        // Check if the order exists
+        if ($order) {
+            // Send cancellation email to the customer
+            $mailData = [
+                "subject" => "Product Order Canceled",
+                "view" => "mail.order-rejected",
+                "with" => ["order" => $order]
+            ];
+
+            Mail::to(auth()->user()->email)->send(new MyMailer($mailData));
+
+            // Delete the order from the database
+            $order->delete();
+
+            return redirect()->back();
+        }
+
+        return response(["error" => "Invalid order data"], 400);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
+    public function order_delivery(Order $order)
     {
-        //
+        // Check if the order exists
+        if (!$order) {
+            return response(["error" => "Invalid order data"], 400);
+        }
+
+        // Check if the order exists
+        if (!$order) {
+            return response(["error" => "Invalid order data"], 400);
+        }
+
+        $product = $order->product;
+        $orderedQuantity = $order->quantity;
+
+        if ($product->quantity < $orderedQuantity) {
+            return response(["error" => "Ordered quantity is not available in stock"], 400);
+        }
+
+        // Update the order status to "delivered"
+        $order->status_id = 2;
+        $order->save();
+
+        $product = $order->product;
+        $product->quantity -= $order->quantity;
+        $product->save();
+
+        // Send delivery confirmation email to the customer
+        $mailData = [
+            "subject" => "Product Order Canceled",
+            "view" => "mail.order-delivery",
+            "with" => ["order" => $order]
+        ];
+
+        Mail::to(auth()->user()->email)->send(new MyMailer($mailData));
+
+        return redirect()->back();
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
+    public function order_delivered(Order $order)
     {
-        //
+        // Check if the order exists
+        if (!$order) {
+            return response(["error" => "Invalid order data"], 400);
+        }
+
+        // Update the order status to "delivered"
+        $order->status_id = 3; // Assuming 3 represents "delivered" status
+        $order->save();
+
+        // Perform any additional actions related to the delivery process
+        // For example, send a delivery confirmation email to the customer
+
+        $mailData = [
+            "subject" => "Product Order Delivered",
+            "view" => "mail.order-delivered",
+            "with" => ["order" => $order]
+        ];
+
+        Mail::to(auth()->user()->email)->send(new MyMailer($mailData));
+
+        return redirect()->back();
     }
 }

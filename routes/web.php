@@ -57,6 +57,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     Route::get("/seller/orders", [OrderController::class, 'index'])->name('orders.index');
+    Route::post("/seller/orders/cancel/{order}", [OrderController::class, 'order_cancel'])->name('orders.cancel');
+    Route::post("/seller/orders/deliver/{order}", [OrderController::class, 'order_delivery'])->name('orders.deliver');
 });
 
 Route::middleware('auth')->group(function () {
