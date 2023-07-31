@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerProductsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\paymentController;
@@ -35,6 +36,8 @@ Route::get('/shop/{shop}', [PagesController::class, 'shop'])->name('shop');
 Route::get('/shop/{shop}/category/{category}', [PagesController::class, 'categoryByShop'])->name('shop.category');
 
 Route::get("/shopcategory/{shopcategory}", [PagesController::class, 'shopcategory'])->name('shopcategory');
+
+Route::get('/search', [CustomerProductsController::class, 'searchProducts'])->name('search');
 
 
 Route::get('/dashboard', function () {

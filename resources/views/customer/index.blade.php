@@ -48,6 +48,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 window.location.href = redirectUrl;
                 return false;
             });
+            refreshDynamicLink();
         }
     </script>
 </body>
