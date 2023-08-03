@@ -46,7 +46,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/seller', 'seller.layouts')->name('seller-layouts');
-    Route::view('/seller/dashboard', 'seller.dashboard')->name('seller-dashboard');
+    Route::get('/seller/dashboard', [PagesController::class, 'sellerDashboard'])->name('seller-dashboard');
     Route::get('/seller/products', [SellerProductController::class, 'index'])->name('seller-products');
     Route::get('/seller/products/create', [SellerProductController::class, 'create'])->name('products.create');
     Route::get("/seller/products/{product}", [SellerProductController::class, 'show'])->name('products.view');
