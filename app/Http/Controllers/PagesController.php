@@ -63,4 +63,13 @@ class PagesController extends Controller
             ->get();
         return view('customer.shopcategories.index', compact('shopcategory', 'sellers'));
     }
+
+    public function sellerDashboard()
+    {
+        $seller = Seller::where('user_id', auth()->id())->first();
+        $totalProducts = $seller->products->count();
+        $totalCategories = $seller->categories->count();
+        $totalOrders = $seller->orders->count();
+        return view('seller.dashboard', compact('totalProducts','totalCategories', 'totalOrders'));
+    }
 }

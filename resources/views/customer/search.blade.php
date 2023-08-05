@@ -7,15 +7,16 @@
                 @php
                     $districts = App\Models\District::all()->sortBy('district_name');
                 @endphp
-                <div class="bg-slate-200 dark:bg-slate-800 border-2 border-dashed border-slate-700 py-4 mx-2 mb-4 rounded-lg" id="address-form-ui">
+                <div class="bg-slate-200 dark:bg-slate-800 border-2 border-dashed border-slate-700 py-4 mx-2 mb-4 rounded-lg"
+                    id="address-form-ui">
                     <div class="container mx-auto">
-                        <h1 class="text-center text-lg">Search products on other different cities</h1>
+                        <h1 class="text-center text-lg">Searched products on other different cities</h1>
                         <form action="{{ route('search') }}" method="GET">
                             <div class="text-center">
                                 <input
                                     class="rounded-md bg-white w-full max-w-xl py-3 px-4 mr-2 text-gray-700 leading-tight focus:outline-none focus:ring-0 border-0"
                                     id="search" type="text" placeholder="Search Products as per your choice......."
-                                    name="query" />
+                                    name="query" value="{{ $searchQuery }}" />
                             </div>
                             <div class="flex gap-2 my-2 flex-wrap justify-center">
                                 <select id="district"
@@ -67,7 +68,33 @@
                         });
                     });
                 </script>
-                <h2 class="text-2xl font-bold mb-3">Search Results</h2>
+                @if ($sellers->count() > 0)
+                    <h2 class="text-2xl font-bold mb-3">
+                        Found Shops
+                        <sup class="text-sm">({{ $municipality->municipality_name }})</sup>
+                    </h2>
+                    <div class="grid grid-cols-2 max-[400]:grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2 mb-5">
+                        @foreach ($sellers as $seller)
+                            <a href="/shop/{{ $seller->id }}" class="block relative">
+                                <div class="w-48 max-[1024px]:w-44 min-[1367px]:w-52 h-40 relative rounded-lg overflow-hidden">
+                                    <img src="{{ Storage::url($seller->user->profile_photo) }}" alt="" class="w-full h-full object-cover">
+                                    <div class="absolute z-10 w-full h-full top-0 left-0 bg-gradient-to-b to-slate-950 via-slate-950/50 from-transparent overflow-hidden">
+                                        <div class="absolute bottom-0 text-white py-1">
+                                            <p class="font-bold px-2 text-sm line-clamp-2">{{ $seller->shop_name }}</p>    
+                                            <p class="font-bold px-2 text-xs line-clamp-1">
+                                                <i class='fa fa-map-marker mr-1' style='font-size:10px'></i> {{ $seller->user->ward }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
+                <h2 class="text-2xl font-bold">
+                    Found Products
+                    <sup class="text-sm">({{ $municipality->municipality_name }})</sup>
+                </h2>
 
                 @if ($products->count() > 0)
                     <div
