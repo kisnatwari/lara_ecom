@@ -73,6 +73,7 @@ class RegisteredUserController extends Controller
             'municipality' => ['required', 'exists:municipalities,id'],
             'shop_category' => ['required', 'exists:shop_categories,id'],
             'ward' => ['required', 'string', 'regex:/^(?![0-9])[A-Za-z\s0-9]+$/'],
+            'profile_pic' => ['required']
         ]);
 
         //return dd($request->all());

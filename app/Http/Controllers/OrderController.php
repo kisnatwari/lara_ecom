@@ -160,7 +160,7 @@ class OrderController extends Controller
 
         // Send delivery confirmation email to the customer
         $mailData = [
-            "subject" => "Product Order Canceled",
+            "subject" => "Product Out for delivery",
             "view" => "mail.order-delivery",
             "with" => ["order" => $order]
         ];

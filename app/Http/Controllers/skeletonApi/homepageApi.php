@@ -14,7 +14,7 @@ class homepageApi extends Controller
 {
     public function vendors()
     {
-        $municipalityId = auth()->user() && auth()->user()->municipality_id;
+        $municipalityId = auth()->user()->municipality_id;
         if (!$municipalityId) {
             return response(["message" => "Authentication failed"]);
         }

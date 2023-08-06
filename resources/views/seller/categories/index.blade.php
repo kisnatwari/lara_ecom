@@ -74,7 +74,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
@@ -83,7 +82,7 @@
             $('.edit-category').click(function() {
                 var id = $(this).data('id');
                 var name = $(this).data('name');
-                $('#edit-category-form').attr('action', '/categories/' + id);
+                $('#edit-category-form').attr('action', '/seller/categories/' + id);
                 $('#edit-name').val(name);
                 $('#edit-modal').removeClass('hidden');
                 $('#edit-modal').addClass('animate__animated animate__fadeIn');

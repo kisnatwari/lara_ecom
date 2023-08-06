@@ -31,7 +31,7 @@
                         {{-- Display Products --}}
                         @foreach ($products as $product)
                             @php
-                                $image = json_decode($product->images, true)[1];
+                                $image = json_decode($product->images, true)[0];
                                 if (strpos($image, 'https://') !== 0 && strpos($image, 'http://') !== 0) {
                                     $imageUrl = Storage::url($image);
                                 } else {

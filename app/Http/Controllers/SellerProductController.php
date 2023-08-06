@@ -14,7 +14,6 @@ class SellerProductController extends Controller
     public function index()
     {
         $seller = Seller::where(['user_id' => auth()->id()])->first();
-        $product = Product::find(1);
         return view('seller.products.index', ['products' => Product::where(['seller_id' => $seller->id])->get()]);
     }
 
@@ -49,7 +48,7 @@ class SellerProductController extends Controller
         for ($i = 0; $i < count($request->files->get('images')); $i++) {
             $file = $request->file('images')[$i];
             $path = $file->store('/public/uploads');
-            $images[count($images) + 1] = $path;
+            $images[] = $path;
         }
 
         $seller = Seller::where(['user_id' => auth()->id()])->first();
@@ -96,6 +95,7 @@ class SellerProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, Product $product)
     {
         $request->validate([
@@ -105,17 +105,31 @@ class SellerProductController extends Controller
             'quantity' => 'required|integer',
             'description' => 'required',
             'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Only allow image files with specified extensions and maximum size of 2MB
             'category_id' => 'exists:categories,id',
         ]);
 
         $brandName = $request->input('brand');
         $brand = Brand::firstOrCreate(['brand_name' => $brandName]);
 
-        $images = [];
-        for ($i = 0; $i < count($request->files->get('images')); $i++) {
-            $file = $request->file('images')[$i];
-            $path = $file->store('/public/uploads');
-            $images[count($images) + 1] = $path;
+        // Update images only if the user is sending images
+        if ($request->hasFile('images')) {
+            $images = [];
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('/public/uploads');
+                $images[] = $path;
+            }
+
+            // Delete previous images
+            $previousImages = json_decode($product->images);
+            if (is_array($previousImages)) {
+                foreach ($previousImages as $previousImage) {
+                    Storage::delete($previousImage);
+                }
+            }
+        } else {
+            // Keep the previous images if the user is not sending new images
+            $images = json_decode($product->images);
         }
 
         $product->update([
