@@ -17,11 +17,11 @@ class SellersTableSeeder extends Seeder
         $faker = Faker::create();
         $sellers = [];
 
-        for ($i = 1; $i <= 4900; $i++) {
+        for ($i = 1; $i <= 5000; $i++) {
             $shopName = $faker->company;
             $sellers[] = [
                 'user_id' => $i, // Assuming the user records have sequential IDs from 1 to 100
-                'shop_category_id' => rand(1, 22), // Replace with the desired range of shop_category IDs
+                'shop_category_id' => rand(1, 16), // Replace with the desired range of shop_category IDs
                 'shop_name' => $shopName,
                 'created_at' => now(),
                 'updated_at' => now(),
