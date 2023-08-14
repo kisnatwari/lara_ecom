@@ -1,4 +1,3 @@
-@props(['orders_label' => ['option A', 'option B'], 'orders_count' => [100, 100]])
 <div class="w-96">
     <canvas id="myChart"></canvas>
 </div>
