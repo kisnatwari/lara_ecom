@@ -18,7 +18,12 @@
                 <p class="text-2xl">{{ $totalOrders }}</p>
             </div>
         </div>
-        <div class="my-4 flex flex-row gap-2">
+        <div class="my-4 flex flex-row flex-wrap gap-2">
+            <div class="bg-slate-200/75  dark:bg-slate-800/50 flex-grow p-2 flex items-end ">
+                <div class="flex-1">
+                    <x-yearly-sales-chart />
+                </div>
+            </div>
             <div class="bg-slate-200/75 dark:bg-slate-800/50 flex-grow p-2 flex items-end">
                 <div class="flex-grow">
                     <x-pie-chart />
@@ -29,7 +34,6 @@
                     <x-bar-graph />
                 </div>
             </div>
-
         </div>
     </div>
 @endsection

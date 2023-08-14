@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use App\Models\Order;
+use App\Models\Seller;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -15,6 +16,8 @@ class BarGraph extends Component
     public $graphData;
     public function __construct()
     {
+
+        $seller_id = Seller::where('user_id', auth()->user()->id)->first()->id;
 
         // Get the current month and year
         $currentMonth = now()->month;
@@ -29,6 +32,7 @@ class BarGraph extends Component
         // Retrieve the data and group by month
         $data = Order::selectRaw('MONTH(orders.created_at) as month, SUM(products.price * orders.quantity) as total')
             ->join('products', 'orders.product_id', '=', 'products.id')
+            ->where('products.seller_id', '=', $seller_id)
             ->whereYear('orders.created_at', $currentYear)
             ->groupBy('month')
             ->get();

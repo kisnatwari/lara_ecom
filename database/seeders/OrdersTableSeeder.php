@@ -20,15 +20,15 @@ class OrdersTableSeeder extends Seeder
 
         $orderItems = [];
 
-        $products = Product::where('seller_id', 1)->pluck('id')->toArray();
+        $products = Product::pluck('id')->toArray();
         $pymt_options = array("khalti", "cod");
         $currentTimestamp = now()->timestamp;
         $status = [1, 2, 3, 3, 3, 3, 3, 3, 3, 3];
 
-        for ($i = 0; $i < 9500; $i++) {
+        for ($i = 0; $i < 9000; $i++) {
             $product_id = $products[array_rand($products)];
             // Check if the user already has the product in the order
-            $user_id = rand(14001, 14050);
+            $user_id = rand(14001, 15000);
             if (isset($orderItems[$user_id]) && in_array($product_id, $orderItems[$user_id])) {
                 continue; // Skip this iteration if the user already has the product in the order
             }
