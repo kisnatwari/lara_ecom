@@ -56,7 +56,7 @@
                             <div class="flex items-center">
                                 <span class="mr-3">Quantity:</span>
                                 @csrf
-                                <input type="hidden" name="product_id" value="{{$product -> id}}">
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="number" name="quantity" value="1" min="1"
                                     max={{ $product->quantity }}
                                     class="w-16 px-3 py-2 border rounded-md bg-transparent dark:text-gray-50 text-gray-700 focus:outline-none focus:border-purple-500">

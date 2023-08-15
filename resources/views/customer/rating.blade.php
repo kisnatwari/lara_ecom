@@ -26,25 +26,7 @@
                             {{ $product->seller->user->municipality->municipality_name }} ,
                             {{ $product->seller->user->municipality->district->district_name }}
                         </p>
-                        {{-- show five star rating --}}
-                        <p>
-                            @php
-                                $rating = $averageRating;
-                                $fullStars = floor($rating);
-                                $halfStar = $rating - $fullStars >= 0.5;
-                            @endphp
-                            @for ($i = 1; $i <= $fullStars; $i++)
-                                <i class="fa fa-star text-yellow-500"></i>
-                            @endfor
-                            @if ($halfStar)
-                                <i class="fas fa-star-half-stroke text-yellow-500"></i>
-                            @endif
-                            @for ($i = $fullStars + ($halfStar ? 1 : 0) + 1; $i <= 5; $i++)
-                                <i class="far fa-star text-yellow-500"></i>
-                            @endfor
-                            <span class="text-xs block">({{ round($averageRating, 2) }}) from {{ $allRating->count() }}
-                                ratings</span>
-                        </p>
+                        <x-star :rating="$averageRating" size='lg' />
                     </div>
                 </div>
 
@@ -55,19 +37,10 @@
                             <legend class="text-slate-300 text-xl">Express your experience&nbsp;</legend>
                         </fieldset>
                         @if ($userRating)
+                            {{-- Showing logged in user's rating if available --}}
                             <div class="bg-slate-950/30 p-3 rounded-lg border border-dashed border-slate-600 mt-2 ">
                                 <p class="text-lg"> {{ $userRating->user->name }} </p>
-                                <div>
-                                    <span class="text-xs">
-                                        @for ($i = 0; $i < 5; $i++)
-                                            @if ($i < $userRating->rating)
-                                                <i class="fa fa-star text-yellow-500"></i>
-                                            @else
-                                                <i class="far fa-star text-yellow-500"></i>
-                                            @endif
-                                        @endfor
-                                    </span>
-                                </div>
+                                <x-star :rating="$userRating->rating" size="sm" />
                                 <p>{{ $userRating->comment }}</p>
                                 <form class="text-end" action="{{ route('rating.destroy', $userRating->id) }}"
                                     method="POST">
@@ -128,22 +101,12 @@
                         <div class="flex flex-col gap-4 pt-3">
                             @foreach ($allRating as $rating)
                                 <div class="bg-slate-950/20 p-3 rounded">
-                                    <div class="flex justify-between">
-                                        <span class="flex flex-col">
-                                            <p class="text-sm text-slate-300">{{ $rating->user->name }}</p>
-                                            <span class="text-xs">
-                                                @for ($i = 0; $i < 5; $i++)
-                                                    @if ($i < $rating->rating)
-                                                        <i class="fa fa-star text-yellow-500"></i>
-                                                    @else
-                                                        <i class="far fa-star text-yellow-500"></i>
-                                                    @endif
-                                                @endfor
-                                            </span>
-                                        </span>
+                                    <div class="flex justify-between mb-1">
+                                        <p class="text-sm text-slate-300">{{ $rating->user->name }}</p>
                                         <p class="text-sm text-slate-400">{{ $rating->created_at->diffForHumans() }}</p>
                                     </div>
-                                    <p class="mt-2 text-slate-300">{{ $rating->comment }}</p>
+                                    <x-star :rating="$rating->rating" size="xs" />
+                                    <p class="text-slate-300">{{ $rating->comment }}</p>
                                 </div>
                             @endforeach
                         </div>
