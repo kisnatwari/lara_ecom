@@ -88,6 +88,17 @@ class PagesController extends Controller
         $totalProducts = $seller->products->count();
         $totalCategories = $seller->categories->count();
         $totalOrders = $seller->orders->count();
-        return view('seller.dashboard', compact('totalProducts', 'totalCategories', 'totalOrders'));
+
+
+        $orders_grouped_payment = DB::table('orders')
+            ->select(DB::raw('count(id) as order_count, payment_mode'))
+            ->where('status_id', '=', '3')
+            ->groupBy('payment_mode')
+            ->get();
+        $orders_count = $orders_grouped_payment->pluck('order_count')->toArray();
+        $orders_label = $orders_grouped_payment->pluck('payment_mode')->toArray();
+
+
+        return view('seller.dashboard', compact('totalProducts', 'totalCategories', 'totalOrders', 'orders_count', 'orders_label', 'graphData'));
     }
 }
