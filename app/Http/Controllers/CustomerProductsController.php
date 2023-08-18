@@ -29,6 +29,7 @@ class CustomerProductsController extends Controller
                 $query->where('products.product_name', 'LIKE', '%' . $searchQuery . '%')
                     ->orWhere('products.description', 'LIKE', '%' . $searchQuery . '%');
             })
+            ->with('ratings')
             ->select('products.*')
             ->get();
 

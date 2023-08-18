@@ -17,7 +17,7 @@
                 <div
                     class="flex flex-row md:flex-col flex-wrap gap-3 md:w-60 lg:w-72 xl:w-80 bg-slate-700/40 p-3 product-view">
                     <img src="{{ $imageUrl }}" alt="" class="w-20 md:w-80 h-fit rounded-lg">
-                    <div class="p-2 min-w-[20rem]">
+                    <div class="p-2">
                         <h1 class="text-xl"> {{ $product->product_name }} </h1>
                         <p> {{ $product->seller->shopCategory->name }} </p>
                         <p class="text-sm font-bold"> Rs {{ number_format($product->price, 2, '.', ',') }} </p>
@@ -27,6 +27,24 @@
                             {{ $product->seller->user->municipality->district->district_name }}
                         </p>
                         <x-star :rating="$averageRating" size='lg' />
+                        <span class="text-xs">
+                            {{ round($averageRating, 2) }} from {{ $totalRatings }} ratings
+                        </span>
+                        <hr>
+                        <div class="my-5">
+                            {{-- showing counted stars for each numbers --}}
+                            @foreach ($num_ratings as $star => $count)
+                                <div class="flex gap-5 md:gap-2 lg:gap-5 mb-2 items-center flex-wrap">
+                                    <x-star :rating="$star" size='xs' />
+                                    <div class="w-20 sm:w-40 md:w-6 lg:w-20 h-2 border border-yellow-600 rounded-lg">
+                                        <div class="bg-yellow-600 h-full"
+                                            style="width: {{ $totalRatings > 0 ? ($count / $totalRatings) * 100 : 0 }}%">
+                                        </div>
+                                    </div>
+                                    <span> {{ $count }} </span>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 

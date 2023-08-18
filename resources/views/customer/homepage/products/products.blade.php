@@ -14,7 +14,8 @@
             return imageUrl.replace("public", "storage");
         }
     }
-    $(document).ready(function() {
+
+    $(window).on('load', function() {
         @if (auth()->user() && auth()->user()->municipality)
             $.ajax({
                 url: '/homepageApi/productsFromMunicipality',
@@ -58,4 +59,20 @@
             });
         }
     });
+
+    function getStarRating(rating, size) {
+        let fullStars = Math.floor(rating);
+        let halfStar = rating - fullStars >= 0.5;
+        let output = '';
+        for (let i = 1; i <= fullStars; i++) {
+            output += '<i class="fa fa-star text-yellow-500"></i>';
+        }
+        if (halfStar) {
+            output += '<i class="fas fa-star-half-stroke text-yellow-500"></i>';
+        }
+        for (let i = fullStars + (halfStar ? 1 : 0) + 1; i <= 5; i++) {
+            output += '<i class="far fa-star text-yellow-500"></i>';
+        }
+        return '<p class="text-' + size + '">' + output + '</p>';
+    }
 </script>

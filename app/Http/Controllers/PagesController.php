@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Rating;
 use App\Models\Seller;
 use App\Models\ShopCategory;
 
@@ -32,7 +33,24 @@ class PagesController extends Controller
 
     public function productview(Product $product)
     {
-        return view('customer.products.view', compact('product'));
+        $user = auth()->user();
+        $allRating = Rating::where('product_id', $product->id)->get();
+
+        // Calculate the average and total rating
+        $sumRating = 0;
+        $numRating = $allRating->count();
+        foreach ($allRating as $rating) {
+            $sumRating += $rating->rating;
+        }
+        $averageRating = $numRating > 0 ? $sumRating / $numRating : 0;
+        $totalRatings = $allRating->count();
+
+        /* count no. of ratings for 1 to 5 stars in array format */
+        $num_ratings = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $num_ratings[$i] = $allRating->where('rating', $i)->count();
+        }
+        return view('customer.products.view', compact('product', 'allRating', 'averageRating', 'totalRatings', 'num_ratings'));
     }
 
 

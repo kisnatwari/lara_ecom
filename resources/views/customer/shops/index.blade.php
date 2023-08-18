@@ -5,8 +5,8 @@
         <div class="w-full bg-slate-50 dark:bg-slate-800">
             <div class="container mx-auto flex gap-3">
                 <div class="py-2">
-                    <img src="{{ Storage::url($shop->user->profile_photo) }}"
-                        alt="{{ $shop->shop_name }}" class="w-36 h-36 object-cover">
+                    <img src="{{ Storage::url($shop->user->profile_photo) }}" alt="{{ $shop->shop_name }}"
+                        class="w-36 h-36 object-cover">
                 </div>
                 <div class="self-end my-2 flex flex-col gap-1 text-slate-700 dark:text-slate-300">
                     <h1 class="text-xl font-bold text-slate-800 dark:text-slate-200">
@@ -14,7 +14,7 @@
                     </h1>
                     <p class="text-md">
                         <i class="fa fa-store mr-1"></i>
-                        {{$shop -> shopCategory -> name}}
+                        {{ $shop->shopCategory->name }}
                     </p>
                     <p class="text-sm">
                         <i class="fa fa-map-marker-alt mr-1"></i>
@@ -75,19 +75,21 @@
                                 } else {
                                     $imageUrl = $image;
                                 }
+                                
+                                $productRatings = json_decode($product->ratings, true);
+                                if (!empty($productRatings)) {
+                                    $averageRating = collect($productRatings)->avg('rating');
+                                } else {
+                                    $averageRating = 0;
+                                }
+                                
                             @endphp
                             <img src="{{ $imageUrl }}" alt=""
                                 class="w-full h-44 sm:h-52 md:h-[185px] lg:h-[200px] xl:h-52 2xl:h-[185px] object-cover rounded-b">
                             <div class="px-2 py-1">
+                                <x-star :rating="$averageRating" size='xs' />
                                 <h5 class="text-md line-clamp-1">{{ $product->product_name }}</h5>
                                 <p class="text-sm font-bold"><small class="text-muted">Rs {{ $product->price }}</small></p>
-                                <span class="text-yellow-500">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </span>
                             </div>
                         </a>
                     @endforeach

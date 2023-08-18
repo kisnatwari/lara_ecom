@@ -7,7 +7,7 @@
         <div
             class="grid random-products-grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2">
             @for ($i = 0; $i < 20; $i++)
-                <x-homepage-product-card-skeleton/>
+                <x-homepage-product-card-skeleton />
             @endfor
         </div>
     </div>
@@ -16,11 +16,13 @@
             var productContainer = $(".random-products-grid");
             productContainer.empty();
             products.forEach(product => {
-                // Replace products in the above grid
+                const averageRating = product.ratings.reduce((acc, cur) => acc + cur.rating, 0) / product.ratings
+                    .length;
                 productContainer.append(`
                         <a href="/products/${product.id}" class="mx-auto my-2 shadow w-44 sm:w-52 md:w-[185px] lg:w-[200px] xl:w-52 2xl:w-[185px] dark:bg-slate-900/60 dark:text-slate-200 text-slate-700 overflow-hidden rounded-md bg-white">
                             <img src="${getProductImageUrl(product.images)}" alt="" class="h-44 sm:h-52 md:h-[185px] lg:h-[200px] xl:h-52 2xl:h-[185px] w-full object-cover rounded-b">
                             <div class="px-2 py-1">
+                                ${getStarRating(averageRating || 0, 'sm')}
                                 <h5 class="text-md line-clamp-1" title="${product.product_name}">
                                     ${product.product_name}
                                 </h5>

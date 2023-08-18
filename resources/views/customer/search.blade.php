@@ -73,16 +73,21 @@
                         Found Shops
                         <sup class="text-sm">({{ $municipality->municipality_name }})</sup>
                     </h2>
-                    <div class="grid grid-cols-2 max-[400]:grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2 mb-5">
+                    <div
+                        class="grid grid-cols-2 max-[400]:grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2 mb-5">
                         @foreach ($sellers as $seller)
                             <a href="/shop/{{ $seller->id }}" class="block relative">
-                                <div class="w-48 max-[1024px]:w-44 min-[1367px]:w-52 h-40 relative rounded-lg overflow-hidden">
-                                    <img src="{{ Storage::url($seller->user->profile_photo) }}" alt="" class="w-full h-full object-cover">
-                                    <div class="absolute z-10 w-full h-full top-0 left-0 bg-gradient-to-b to-slate-950 via-slate-950/50 from-transparent overflow-hidden">
+                                <div
+                                    class="w-48 max-[1024px]:w-44 min-[1367px]:w-52 h-40 relative rounded-lg overflow-hidden">
+                                    <img src="{{ Storage::url($seller->user->profile_photo) }}" alt=""
+                                        class="w-full h-full object-cover">
+                                    <div
+                                        class="absolute z-10 w-full h-full top-0 left-0 bg-gradient-to-b to-slate-950 via-slate-950/50 from-transparent overflow-hidden">
                                         <div class="absolute bottom-0 text-white py-1">
-                                            <p class="font-bold px-2 text-sm line-clamp-2">{{ $seller->shop_name }}</p>    
+                                            <p class="font-bold px-2 text-sm line-clamp-2">{{ $seller->shop_name }}</p>
                                             <p class="font-bold px-2 text-xs line-clamp-1">
-                                                <i class='fa fa-map-marker mr-1' style='font-size:10px'></i> {{ $seller->user->ward }}
+                                                <i class='fa fa-map-marker mr-1' style='font-size:10px'></i>
+                                                {{ $seller->user->ward }}
                                             </p>
                                         </div>
                                     </div>
@@ -100,6 +105,9 @@
                     <div
                         class="grid product-municipality-grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2">
                         @foreach ($products as $product)
+                            @php
+                                $averageRating = $product->ratings->avg('rating');
+                            @endphp
                             <a href="products/{{ $product->id }}"
                                 class="mx-auto my-2 shadow w-44 sm:w-52 md:w-[185px] lg:w-[200px] xl:w-52 2xl:w-[185px] bg-white dark:bg-slate-900/60 dark:text-slate-200 text-slate-700 overflow-hidden rounded-md">
                                 <div
@@ -115,6 +123,7 @@
                                     <img src="{{ $imageUrl }}" alt="" class="w-full h-full object-cover">
                                 </div>
                                 <div class="px-2 py-1">
+                                    <x-star :rating="$averageRating" size='xs' />
                                     <h3 class="text-md font-semibold line-clamp-1" title="{{ $product->product_name }}">
                                         {{ $product->product_name }}
                                     </h3>

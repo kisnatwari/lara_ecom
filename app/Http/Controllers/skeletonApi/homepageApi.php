@@ -34,7 +34,7 @@ class homepageApi extends Controller
             $query->where('municipality_id', $municipalityId);
         })->get();
 
-        $products = Product::with('seller.user')->whereIn('seller_id', $vendors->pluck('id')->toArray())
+        $products = Product::with('seller.user')->with('ratings')->whereIn('seller_id', $vendors->pluck('id')->toArray())
             ->inRandomOrder()
             ->limit(32)
             ->get();
@@ -50,7 +50,7 @@ class homepageApi extends Controller
 
         $userDistrictId = auth()->user()->municipality->district_id;
 
-        $products = Product::with('seller.user.municipality')->whereHas('seller.user.municipality', function ($query) use ($userDistrictId) {
+        $products = Product::with('seller.user.municipality')->with('ratings')->whereHas('seller.user.municipality', function ($query) use ($userDistrictId) {
             $query->where('district_id', $userDistrictId);
         })->inRandomOrder()->limit(32)->get();
 
@@ -60,6 +60,7 @@ class homepageApi extends Controller
     public function randomProducts()
     {
         $randomProducts = Product::with('seller.user.municipality.district')
+            ->with('ratings')
             ->orderBy('id', 'desc')
             ->limit(32)
             ->get();

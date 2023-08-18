@@ -25,12 +25,20 @@ class RatingController extends Controller
         }
         $averageRating = $numRating > 0 ? $sumRating / $numRating : 0;
 
+        $totalRatings = $allRating->count();
+
+        /* count no. of ratings for 1 to 5 stars in array format */
+        $num_ratings = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $num_ratings[$i] = $allRating->where('rating', $i)->count();
+        }
+
         // Remove the user rating from allRating
         $allRating = $allRating->reject(function ($rating) use ($userRating) {
             return $rating->id === optional($userRating)->id;
         });
 
-        return view('customer.rating', compact('product', 'userRating', 'allRating', 'averageRating'));
+        return view('customer.rating', compact('product', 'userRating', 'allRating', 'averageRating', 'totalRatings', 'num_ratings'));
     }
 
     /**
