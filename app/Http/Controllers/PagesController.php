@@ -70,6 +70,6 @@ class PagesController extends Controller
         $totalProducts = $seller->products->count();
         $totalCategories = $seller->categories->count();
         $totalOrders = $seller->orders->count();
-        return view('seller.dashboard', compact('totalProducts','totalCategories', 'totalOrders'));
+        return view('seller.dashboard', compact('totalProducts', 'totalCategories', 'totalOrders'));
     }
 }

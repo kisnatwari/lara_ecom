@@ -48,7 +48,7 @@ class CustomerProductsController extends Controller
 
         // Combine the sellers from products and sellers table, ensuring uniqueness
         $sellers = $sellers->union($productSellers)->unique();
-        
+
         // Return the search results
         $municipality = Municipality::find($municipalityId);
         return view('customer.search', compact('products', 'sellers', 'searchQuery', 'municipality'));
