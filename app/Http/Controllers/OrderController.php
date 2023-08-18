@@ -20,13 +20,13 @@ class OrderController extends Controller
             ->with(['product', 'user.municipality.district'])
             ->orderBy('created_at', 'desc')
             ->where('status_id', '<', '3')
-            ->get();
+            ->paginate(20);
 
         $groupedOrders = $orders->groupBy('user_id');
 
         //return response($groupedOrders);
 
-        return view('seller.orders.index', compact('groupedOrders'));
+        return view('seller.orders.index', compact('orders'));
     }
 
     public function completedOrders()
@@ -38,15 +38,16 @@ class OrderController extends Controller
             ->with(['product', 'user.municipality.district'])
             ->orderBy('created_at', 'desc')
             ->where('status_id', '=', '3')
-            ->get();
+            ->paginate(15);
 
         $groupedOrders = $orders->groupBy('user_id');
 
         return view('seller.orders.completed', compact('groupedOrders'));
     }
 
-    public function myOrders(){
-        $userId = auth() -> id();
+    public function myOrders()
+    {
+        $userId = auth()->id();
         $orders = Order::where('user_id', $userId)->get();
         return view('customer.myorders', compact('orders'));
     }

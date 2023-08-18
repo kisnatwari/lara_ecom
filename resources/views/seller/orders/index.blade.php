@@ -1,15 +1,20 @@
 @extends('seller.layouts')
-
 @section('content')
     <div class="h-full p-1">
         <div class="h-full bg-white dark:bg-gray-900 p-2 overflow-auto">
             <div class="flex justify-between">
                 <h1 class="text-gray-800 dark:text-gray-200 text-2xl mb-4">Ordered Products</h1>
-                <a href="{{route('orders.completed')}}"
+                <a href="{{ route('orders.completed') }}"
                     class='bg-slate-800 hover:brightness-90 active:brightness-95 duration-300 px-5 py-2 rounded-md h-fit text-white'>
                     <span>See Completed Orders</span>
                 </a>
             </div>
+            <div class="pagination">
+                {{ $orders->links() }}
+            </div>
+            @php
+                $groupedOrders = $orders->groupBy('user_id');
+            @endphp
             <div class="p-2">
                 @foreach ($groupedOrders as $individualOrders)
                     @php
@@ -99,7 +104,7 @@
                                                 Rs {{ number_format($product->price * $order->quantity, 2, '.', ',') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                {{$order -> payment_mode}}
+                                                {{ $order->payment_mode }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap flex justify-start gap-2 flex-wrap">
                                                 @if ($order->status_id == 1)
@@ -144,6 +149,9 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+            <div class="pagination">
+                {{ $orders->links() }}
             </div>
         </div>
     </div>

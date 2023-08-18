@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Rating;
 use App\Models\Seller;
 use App\Models\ShopCategory;
+use Illuminate\Support\Facades\DB;
 
 class PagesController extends Controller
 {
@@ -98,6 +100,54 @@ class PagesController extends Controller
         $orders_count = $orders_grouped_payment->pluck('order_count')->toArray();
         $orders_label = $orders_grouped_payment->pluck('payment_mode')->toArray();
 
+
+        // Get the current month and year
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
+
+        // Create an array of all months in the current year
+        $months = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $months[date('F', mktime(0, 0, 0, $i, 1))] = 0;
+        }
+
+        // Retrieve the data and group by month
+        $data = Order::selectRaw('MONTH(orders.created_at) as month, SUM(products.price * orders.quantity) as total')
+            ->join('products', 'orders.product_id', '=', 'products.id')
+            ->whereYear('orders.created_at', $currentYear)
+            ->groupBy('month')
+            ->get();
+
+        // Format the data for the bar graph
+        $graphData = [];
+        foreach ($data as $item) {
+            $month = date('F', mktime(0, 0, 0, $item->month, 1));
+            $graphData[$month] = $item->total;
+        }
+
+        // Add future months with 0 amount to the graph data
+        for ($i = $currentMonth + 1; $i <= 12; $i++) {
+            $month = date('F', mktime(0, 0, 0, $i, 1));
+            $graphData[$month] = 0;
+        }
+
+        // Merge the graph data with the months array
+        $graphData = array_merge($months, $graphData);
+
+        // Format the data for the bar graph
+        $monthNames = [];
+        $orderAmounts = [];
+        foreach ($graphData as $month => $amount) {
+            $monthNames[] = $month;
+            $orderAmounts[] = $amount;
+        }
+
+        $graphData = [
+            $monthNames,
+            $orderAmounts,
+        ];
+
+        //return response($graphData, 200);
 
         return view('seller.dashboard', compact('totalProducts', 'totalCategories', 'totalOrders', 'orders_count', 'orders_label', 'graphData'));
     }

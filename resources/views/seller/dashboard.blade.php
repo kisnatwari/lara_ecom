@@ -22,6 +22,9 @@
             <div class="flex-1">
                 <x-pie-chart :orders_label="$orders_label" :orders_count="$orders_count" />
             </div>
+            <div class="flex-1">
+                <x-bar-graph :graph_data="$graphData" />
+            </div>
         </div>
     </div>
 @endsection
