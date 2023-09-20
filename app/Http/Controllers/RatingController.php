@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Rating;
 use Illuminate\Http\Request;
@@ -14,8 +15,19 @@ class RatingController extends Controller
     public function index(Product $product)
     {
         $user = auth()->user();
+
+        $countPurchases = Order::where('user_id', $user->id)
+            ->where('product_id', $product->id)
+            ->where('status_id', '3')
+            ->count();
+
+        if ($countPurchases == 0)
+            return redirect('/');
+
         $userRating = Rating::where('user_id', $user->id)->where('product_id', $product->id)->first();
         $allRating = Rating::where('product_id', $product->id)->get();
+
+
 
         // Calculate the average rating
         $sumRating = 0;
@@ -55,6 +67,11 @@ class RatingController extends Controller
     public function store(Request $request, Product $product)
     {
         $user = auth()->user();
+
+        $request->validate([
+            'star-rating' => 'required|integer|between:1,5',
+            'comment' => 'required|min:3',
+        ]);
 
         // Check if the user has already rated this product
         $existingRating = Rating::where('user_id', $user->id)
