@@ -4,6 +4,7 @@
     <div class="pt-2">
         <div class="bg-white/100 dark:bg-slate-800/75 py-5 mb-2">
             <div class="container mx-auto">
+
                 <table class="w-full border-collapse divide-y shadow-lg divide-slate-800 dark:divide-slate-200">
                     <thead>
                         <tr>
@@ -33,9 +34,7 @@
                             @endphp
                             <tr>
                                 <td class="px-4 py-2">
-                                    {{
-                                        $order -> created_at -> diffForHumans()
-                                    }}
+                                    {{ $order->created_at->diffForHumans() }}
                                 </td>
                                 <td class="px-4 py-2">
                                     <img src="{{ $imageUrl }}"
@@ -46,11 +45,11 @@
                                 </td>
                                 <td class="px-4 py-2">
                                     <b>
-                                        <a href="{{route('shop', $item -> seller)}}">
-                                            {{ $item -> seller -> shop_name }}
+                                        <a href="{{ route('shop', $item->seller) }}">
+                                            {{ $item->seller->shop_name }}
                                             <span class="block text-xs text-gray-700 dark:text-gray-300">
-                                                {{ $item -> seller -> user -> ward }},
-                                                {{ $item -> seller -> user -> municipality -> municipality_name }}
+                                                {{ $item->seller->user->ward }},
+                                                {{ $item->seller->user->municipality->municipality_name }}
                                             </span>
                                         </a>
                                     </b>
@@ -61,14 +60,16 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-2"> Rs {{ number_format($item['price'], 2, '.', ',') }}</td>
-                                <td class="px-4 py-2"> Rs {{  number_format($order['quantity'] * $item['price'], 2, '.', ',') }}</td>
+                                <td class="px-4 py-2"> Rs
+                                    {{ number_format($order['quantity'] * $item['price'], 2, '.', ',') }}</td>
                                 <td class="px-4 py-2">
-                                    {{$order -> status -> name}}
+                                    {{ $order->status->name }}
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+                {{ $orders->links() }}
             </div>
         </div>
     </div>

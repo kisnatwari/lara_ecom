@@ -14,17 +14,23 @@ class OrderController extends Controller
     public function index()
     {
         $sellerId = auth()->user()->seller->id;
-        $orders = Order::whereHas('product.seller', function ($query) use ($sellerId) {
-            $query->where('seller_id', $sellerId);
-        })
-            ->with(['product', 'user.municipality.district'])
-            ->orderBy('created_at', 'desc')
+
+        // $orders = Order::whereHas('product.seller', function ($query) use ($sellerId) {
+        //     $query->where('seller_id', $sellerId);
+        // })
+        //     ->with(['product', 'user.municipality.district'])
+        //     ->orderBy('created_at', 'desc')
+        //     ->where('status_id', '<', '3')
+        //     ->paginate(20);
+
+        $orders = Order::join('products', 'products.id', "=", "orders.product_id")
+            ->join("users", "users.id", "=", "orders.user_id")
+            ->with(["product", "user.municipality.district"])
+            ->where("seller_id", "=", $sellerId)
+            ->select("orders.*")
+            ->orderBy("created_at", "desc")
             ->where('status_id', '<', '3')
             ->paginate(20);
-
-        $groupedOrders = $orders->groupBy('user_id');
-
-        //return response($groupedOrders);
 
         return view('seller.orders.index', compact('orders'));
     }
@@ -32,13 +38,22 @@ class OrderController extends Controller
     public function completedOrders()
     {
         $sellerId = auth()->user()->seller->id;
-        $orders = Order::whereHas('product.seller', function ($query) use ($sellerId) {
-            $query->where('seller_id', $sellerId);
-        })
-            ->with(['product', 'user.municipality.district'])
-            ->orderBy('created_at', 'desc')
+        // $orders = Order::whereHas('product.seller', function ($query) use ($sellerId) {
+        //     $query->where('seller_id', $sellerId);
+        // })
+        //     ->with(['product', 'user.municipality.district'])
+        //     ->orderBy('created_at', 'desc')
+        //     ->where('status_id', '=', '3')
+        //     ->paginate(15);
+
+        $orders = Order::join('products', 'products.id', "=", "orders.product_id")
+            ->join("users", "users.id", "=", "orders.user_id")
+            ->with(["product", "user.municipality.district"])
+            ->where("seller_id", "=", $sellerId)
+            ->select("orders.*")
+            ->orderBy("created_at", "desc")
             ->where('status_id', '=', '3')
-            ->paginate(15);
+            ->paginate(20);
 
         $groupedOrders = $orders->groupBy('user_id');
 
@@ -48,7 +63,9 @@ class OrderController extends Controller
     public function myOrders()
     {
         $userId = auth()->id();
-        $orders = Order::where('user_id', $userId)->get();
+        $orders = Order::where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
         return view('customer.myorders', compact('orders'));
     }
 
