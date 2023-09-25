@@ -27,9 +27,6 @@ class TrendingProductsChart extends Component
 
     private function getChartData()
     {
-        $startDate = Carbon::now()->subDays(365);
-        $endDate = Carbon::now();
-
         $sellerId = Seller::where('user_id', auth()->user()->id)->first()->id;
 
         $startDate = Carbon::now()->subMonth(12);
@@ -45,8 +42,6 @@ class TrendingProductsChart extends Component
             ->groupBy('products.id', 'products.product_name')
             ->limit(5)
             ->get();
-
-        //dd($trendingProducts);
 
 
         $trendingProducts = [

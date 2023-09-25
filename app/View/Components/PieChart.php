@@ -18,7 +18,6 @@ class PieChart extends Component
     public $orders_count;
     public function __construct()
     {
-        $this->title = "Krishna";
 
         $seller_id = Seller::where('user_id', auth()->user()->id)->first()->id;
 

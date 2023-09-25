@@ -13,13 +13,13 @@
                 label: 'Sales (NRs)',
                 data: @json($graphData[1]),
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgb(255, 89, 532, 0.2)',
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(255, 159, 64, 0.8)',
+                    'rgb(255, 89, 532, 0.8)',
                 ],
                 borderColor: [
                     'rgba(255, 99, 132, 1)',
@@ -43,7 +43,12 @@
                     }
                 }]
             },
-            height: 800,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Monthly Sales for this year'
+                }
+            }
         }
     });
 </script>
